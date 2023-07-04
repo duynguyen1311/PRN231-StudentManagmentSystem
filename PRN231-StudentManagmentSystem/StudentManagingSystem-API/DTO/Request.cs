@@ -106,4 +106,49 @@ namespace StudentManagingSystem_API.DTO
         public DateTime? LastModifiedDate { get; set; }
     }
     #endregion
+
+    #region Student
+    public class StudentSearchRequest
+    {
+        public string? keyword { get; set; }
+        public bool? status { get; set; }
+        public int page { get; set; }
+        public int pagesize { get; set; }
+    }
+
+    public class StudentAddRequest
+    {
+        public string StudentName { get; set; }
+        public string StudentCode { get; set; }
+        public string? Address { get; set; }
+        public string Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+        public string? Gender { get; set; }
+        public DateTime? DOB { get; set; }
+        public bool? Status { get; set; }
+        public string? Phone { get; set; }
+        public int InSemester { get; set; }
+        public Guid? ClassRoomId { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+    }
+    public class StudentUpdateRequest
+    {
+        public Guid Id { get; set; }
+        public string StudentName { get; set; }
+        public string StudentCode { get; set; }
+        public string? Address { get; set; }
+        public string? Email { get; set; }
+        public string? Gender { get; set; }
+        public DateTime? DOB { get; set; }
+        public bool? Status { get; set; }
+        public string? Phone { get; set; }
+        public int InSemester { get; set; }
+        public Guid? ClassRoomId { get; set; }
+        public string? LastModifiedBy { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+    }
+    #endregion
 }
