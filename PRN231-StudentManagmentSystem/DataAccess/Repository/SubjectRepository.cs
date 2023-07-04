@@ -5,7 +5,7 @@ using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.Utility;
 
-namespace StudentManagingSystem.Repository
+namespace DataAccess.Repository
 {
     public class SubjectRepository : ISubjectRepository
     {

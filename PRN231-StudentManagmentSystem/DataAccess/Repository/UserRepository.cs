@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using DataAccess.Repository.IRepository;
 using BusinessObject.Utility;
 
-namespace StudentManagingSystem.Repository
+namespace DataAccess.Repository
 {
     public class UserRepository : IUserRepository
     {

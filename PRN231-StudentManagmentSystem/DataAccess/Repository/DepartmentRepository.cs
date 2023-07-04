@@ -5,7 +5,7 @@ using BusinessObject.Model.Interface;
 using DataAccess.Repository.IRepository;
 using BusinessObject.Utility;
 
-namespace StudentManagingSystem.Repository
+namespace DataAccess.Repository
 {
     public class DepartmentRepository : IDepartmentRepository
     {
