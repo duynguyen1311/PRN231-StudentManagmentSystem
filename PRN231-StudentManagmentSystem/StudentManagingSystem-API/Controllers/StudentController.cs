@@ -73,7 +73,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] StudentUpdateRequest rq)
         {
             try
@@ -99,7 +99,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] Guid Id)
         {
             try
@@ -113,7 +113,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpGet("search")]
+        [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] StudentSearchRequest rq)
         {
             try

@@ -27,8 +27,11 @@ namespace DataAccess.Repository
         {
             var department = await _context.Departments.FirstOrDefaultAsync(i => i.Id == id);
             if (department == null) throw new ArgumentException("Can not find !!!");
-            var c = await _context.ClassRooms.FirstOrDefaultAsync(i => i.DepartmentId == id);
-            if (c != null) c.DepartmentId = null;
+            var c = await _context.ClassRooms.Where(i => i.DepartmentId == id).ToListAsync();
+            foreach(var item in c)
+            {
+                item.DepartmentId = null;
+            }
             _context.Departments.Remove(department);
             await _context.SaveChangesAsync(cancellationToken);
         }

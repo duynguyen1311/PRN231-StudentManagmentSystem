@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessObject.Model;
+using BusinessObject.Utility;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpPost("update")]
+        [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] ClassRoomUpdateRequest rq)
         {
             try
@@ -52,7 +53,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] Guid Id)
         {
             try
@@ -80,13 +81,14 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpGet("search")]
+        [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] ClassRoomSearchRequest rq)
         {
             try
             {
                 var res = await _repository.Search(rq.keyword, rq.status,rq.teacherId, rq.page, rq.pagesize);
-                return Ok(res);
+                var map = _mapper.Map<PagedList<ClassRoomSearchResponse>>(res);
+                return Ok(map);
             }
             catch (Exception ex)
             {
@@ -108,7 +110,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpGet("searchClassByStudent")]
+        [HttpPost("searchClassByStudent")]
         public async Task<IActionResult> SearchClassByStudent([FromBody] ClassRoomSearchByStudentRequest rq)
         {
             try

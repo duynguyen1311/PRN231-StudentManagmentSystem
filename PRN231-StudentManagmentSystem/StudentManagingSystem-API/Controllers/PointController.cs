@@ -9,12 +9,12 @@ namespace StudentManagingSystem_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class PointController : ControllerBase
     {
-        private readonly IDepartmentRepository _repository;
+        private readonly IPointRepository _repository;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentRepository repository, IMapper mapper)
+        public PointController(IPointRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -22,12 +22,12 @@ namespace StudentManagingSystem_API.Controllers
 
 
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] DepartmentAddRequest rq)
+        public async Task<IActionResult> Add([FromBody] PointAddRequest rq)
         {
             try
             {
                 rq.CreatedDate = DateTime.Now;
-                var map = _mapper.Map<Department>(rq);
+                var map = _mapper.Map<Point>(rq);
                 await _repository.Add(map);
                 return Ok();
             }
@@ -38,12 +38,12 @@ namespace StudentManagingSystem_API.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] DepartmentUpdateRequest rq)
+        public async Task<IActionResult> Update([FromBody] PointUpdateRequest rq)
         {
             try
             {
                 rq.LastModifiedDate = DateTime.Now;
-                var map = _mapper.Map<Department>(rq);
+                var map = _mapper.Map<Point>(rq);
                 await _repository.Update(map);
                 return Ok();
             }
@@ -67,26 +67,12 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAll()
-        {
-            try
-            {
-                var res = await _repository.GetAll();
-                return Ok(res);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpPost("search")]
-        public async Task<IActionResult> Search([FromBody] DepartmentSearchRequest rq)
+        public async Task<IActionResult> Search([FromBody] PointSearchRequest rq)
         {
             try
             {
-                var res = await _repository.Search(rq.keyword, rq.status, rq.page, rq.pagesize);
+                var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.page, rq.pagesize);
                 return Ok(res);
             }
             catch (Exception ex)
@@ -101,9 +87,9 @@ namespace StudentManagingSystem_API.Controllers
             try
             {
                 var res = await _repository.GetById(Id);
-                if (res == null) throw new ArgumentException("Can not find !");
                 return Ok(res);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
