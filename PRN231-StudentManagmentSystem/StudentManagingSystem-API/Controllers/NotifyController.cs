@@ -9,25 +9,24 @@ namespace StudentManagingSystem_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class NotifyController : ControllerBase
     {
-        private readonly IDepartmentRepository _repository;
+        private readonly INotiRepository _repository;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentRepository repository, IMapper mapper)
+        public NotifyController(INotiRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] DepartmentAddRequest rq)
+        public async Task<IActionResult> Add([FromBody] NotifyAddRequest rq)
         {
             try
             {
                 rq.CreatedDate = DateTime.Now;
-                var map = _mapper.Map<Department>(rq);
+                var map = _mapper.Map<Notification>(rq);
                 await _repository.Add(map);
                 return Ok();
             }
@@ -38,12 +37,12 @@ namespace StudentManagingSystem_API.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> Update([FromBody] DepartmentUpdateRequest rq)
+        public async Task<IActionResult> Update([FromBody] NotifyUpdateRequest rq)
         {
             try
             {
                 rq.LastModifiedDate = DateTime.Now;
-                var map = _mapper.Map<Department>(rq);
+                var map = _mapper.Map<Notification>(rq);
                 await _repository.Update(map);
                 return Ok();
             }
@@ -82,11 +81,11 @@ namespace StudentManagingSystem_API.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromBody] DepartmentSearchRequest rq)
+        public async Task<IActionResult> Search([FromBody] NotifySearchRequest rq)
         {
             try
             {
-                var res = await _repository.Search(rq.keyword, rq.status, rq.page, rq.pagesize);
+                var res = await _repository.Search(rq.page, rq.pagesize);
                 return Ok(res);
             }
             catch (Exception ex)
@@ -103,7 +102,8 @@ namespace StudentManagingSystem_API.Controllers
                 var res = await _repository.GetById(Id);
                 if (res == null) throw new ArgumentException("Can not find !");
                 return Ok(res);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

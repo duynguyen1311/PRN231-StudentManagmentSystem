@@ -9,25 +9,24 @@ namespace StudentManagingSystem_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class ClassRoomController : ControllerBase
     {
-        private readonly IDepartmentRepository _repository;
+        private readonly IRoomRepository _repository;
         private readonly IMapper _mapper;
 
-        public DepartmentController(IDepartmentRepository repository, IMapper mapper)
+        public ClassRoomController(IRoomRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] DepartmentAddRequest rq)
+        public async Task<IActionResult> Add([FromBody] ClassRoomAddRequest rq)
         {
             try
             {
                 rq.CreatedDate = DateTime.Now;
-                var map = _mapper.Map<Department>(rq);
+                var map = _mapper.Map<ClassRoom>(rq);
                 await _repository.Add(map);
                 return Ok();
             }
@@ -38,12 +37,12 @@ namespace StudentManagingSystem_API.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> Update([FromBody] DepartmentUpdateRequest rq)
+        public async Task<IActionResult> Update([FromBody] ClassRoomUpdateRequest rq)
         {
             try
             {
-                rq.LastModifiedDate = DateTime.Now;
-                var map = _mapper.Map<Department>(rq);
+                rq.LastModifiedDate = DateTime.Now; 
+                var map = _mapper.Map<ClassRoom>(rq);
                 await _repository.Update(map);
                 return Ok();
             }
@@ -82,11 +81,11 @@ namespace StudentManagingSystem_API.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromBody] DepartmentSearchRequest rq)
+        public async Task<IActionResult> Search([FromBody] ClassRoomSearchRequest rq)
         {
             try
             {
-                var res = await _repository.Search(rq.keyword, rq.status, rq.page, rq.pagesize);
+                var res = await _repository.Search(rq.keyword, rq.status,rq.teacherId, rq.page, rq.pagesize);
                 return Ok(res);
             }
             catch (Exception ex)
@@ -94,6 +93,35 @@ namespace StudentManagingSystem_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("listStudentByClass")]
+        public async Task<IActionResult> ListStudentByClass([FromQuery] Guid Id)
+        {
+            try
+            {
+                var res = await _repository.ListStudentByClass(Id);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("searchClassByStudent")]
+        public async Task<IActionResult> SearchClassByStudent([FromBody] ClassRoomSearchByStudentRequest rq)
+        {
+            try
+            {
+                var res = await _repository.SearchClassByStudent(rq.keyword,rq.status,rq.studentId,rq.page,rq.pagesize);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpGet("detail")]
         public async Task<IActionResult> GetDetail([FromQuery] Guid Id)
@@ -103,7 +131,8 @@ namespace StudentManagingSystem_API.Controllers
                 var res = await _repository.GetById(Id);
                 if (res == null) throw new ArgumentException("Can not find !");
                 return Ok(res);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
