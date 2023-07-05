@@ -13,6 +13,8 @@ namespace BusinessObject.Model
         public bool? Status { get; set; }
         [MaxLength(500)]
         public string? Description { get; set; }
+        //Tín chỉ
+        public int? Credit { get; set; }
         public int? Semester { get; set; }
         public ICollection<Point> Point { get; set; }
     }

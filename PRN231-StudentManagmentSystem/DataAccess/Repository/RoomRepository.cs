@@ -50,10 +50,9 @@ namespace DataAccess.Repository
         public async Task<ClassRoom> GetById(Guid id)
         {
             var c = await _context.ClassRooms.FirstOrDefaultAsync(i => i.Id == id);
+            if(c == null) throw new ArgumentException("Can not find !!!");
             return c;
         }
-
-
 
         public async Task<PagedList<ClassRoom>> Search(string? keyword, bool? status, string? tid, int page, int pagesize)
         {

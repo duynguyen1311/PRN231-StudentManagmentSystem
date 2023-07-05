@@ -10,5 +10,6 @@ namespace DataAccess.Repository.IRepository
         Task Delete(Guid id, CancellationToken cancellationToken = default);
         Task<Point> GetById(Guid id);
         Task<PagedList<Point>> Search(string? keyword,int? semester, Guid? subId,Guid? stuId, int page, int pagesize);
+        Task<PagedList<Point>> PointStatistic(string? keyword,int? semester, Guid? subId,Guid? stuId, int page, int pagesize);
     }
 }

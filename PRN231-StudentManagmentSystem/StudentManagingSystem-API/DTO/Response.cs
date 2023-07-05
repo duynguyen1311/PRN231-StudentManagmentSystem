@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using BusinessObject.Model;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace StudentManagingSystem_API.DTO
 {
@@ -18,6 +20,31 @@ namespace StudentManagingSystem_API.DTO
         public DateTime? LastModifiedDate { get; set; }
     }
 
+    public class StudentExport
+    {
+        public Guid Id { get; set; }
+        public string? StudentName { get; set; }
+        public string? StudentCode { get; set; }
+        public string? Address { get; set; }
+        public string? Email { get; set; }
+        public string? Gender { get; set; }
+        public DateTime? DOB { get; set; }
+        public bool? Status { get; set; }
+        public string? Phone { get; set; }
+        public int InSemester { get; set; }
+        public string? ClassName { get; set; }
+    }
+
+    public class ClassRoomExport
+    {
+        public Guid Id { get; set; }
+        public string? ClassName { get; set; }
+        public string? ClassCode { get; set; }
+        public bool? Status { get; set; }
+        public string? Department { get; set; }
+        public string? Teacher { get; set; }
+    }
+
     public class TeacherResponse
     {
         public string Id { get; set; }
@@ -27,10 +54,40 @@ namespace StudentManagingSystem_API.DTO
         public string? Phone { get; set; }
         public string? Gender { get; set; }
         public DateTime? DOB { get; set; }
+        public bool? Status { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string? LastModifiedBy { get; set; }
         public DateTime? LastModifiedDate { get; set; }
+    }
+
+    public class PointResponse
+    {
+        public Guid Id { get; set; }
+        public Guid StudentId { get; set; }
+        public string? StudentName { get; set; }
+        public Guid SubjectId { get; set; }
+        public string? SubjectName { get; set; }
+        public float? ProgessPoint { get; set; }
+        public float? MidtermPoint { get; set; }
+        public bool? IsPassed { get; set; }
+        public float? FinalPoint { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string? LastModifiedBy { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+    }
+
+    public class PointStatic
+    {
+        
+    }
+
+    public class LoginResponse
+    {
+        public string Role { get; set; } = null!;
+
+        public string Token { get; set; } = null!;
     }
 
 }

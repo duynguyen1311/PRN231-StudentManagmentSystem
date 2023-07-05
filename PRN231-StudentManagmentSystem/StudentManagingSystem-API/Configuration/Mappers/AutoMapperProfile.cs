@@ -52,6 +52,14 @@ namespace StudentManagingSystem_API.Configuration.Mappers
             //Teacher
             CreateMap(typeof(PagedList<AppUser>), typeof(PagedList<TeacherResponse>)).ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null)); ;
             CreateMap<AppUser, TeacherResponse>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
+
+            //Point
+            CreateMap(typeof(PagedList<Point>), typeof(PagedList<PointResponse>)).ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null)); ;
+            CreateMap<Point, PointResponse>()
+                .ForMember(destination => destination.StudentName, options => options.MapFrom(source => source.Student.StudentName))
+                .ForMember(destination => destination.SubjectName, options => options.MapFrom(source => source.Subject.SubjectName));
+
+
             #endregion
 
         }

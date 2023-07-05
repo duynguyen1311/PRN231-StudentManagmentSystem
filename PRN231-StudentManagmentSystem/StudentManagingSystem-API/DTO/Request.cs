@@ -141,7 +141,7 @@ namespace StudentManagingSystem_API.DTO
         public string Password { get; set; }
         public string? Gender { get; set; }
         public DateTime? DOB { get; set; }
-        public bool? Status { get; set; }
+        public bool Status { get; set; }
         public string? Phone { get; set; }
         public int InSemester { get; set; }
         public Guid? ClassRoomId { get; set; }
@@ -197,6 +197,8 @@ namespace StudentManagingSystem_API.DTO
         public bool? Status { get; set; }
         public string? Description { get; set; }
         public int? Semester { get; set; }
+        //tín chỉ
+        public int? Credit { get; set; }
         [JsonIgnore]
         public string? CreatedBy { get; set; }
         [JsonIgnore]
@@ -230,11 +232,12 @@ namespace StudentManagingSystem_API.DTO
 
     public class PointAddRequest
     {
+        [JsonIgnore]
+        public Guid? Id { get; set; }
         public Guid StudentId { get; set; }
         public Guid SubjectId { get; set; }
         public float? ProgessPoint { get; set; }
         public float? MidtermPoint { get; set; }
-        public float? FinalPoint { get; set; }
         [JsonIgnore]
         public string? CreatedBy { get; set; }
         [JsonIgnore]
@@ -243,11 +246,8 @@ namespace StudentManagingSystem_API.DTO
     public class PointUpdateRequest
     {
         public Guid Id { get; set; }
-        public Guid StudentId { get; set; }
-        public Guid SubjectId { get; set; }
         public float? ProgessPoint { get; set; }
         public float? MidtermPoint { get; set; }
-        public float? FinalPoint { get; set; }
         [JsonIgnore]
         public string? LastModifiedBy { get; set; }
         [JsonIgnore]
@@ -293,6 +293,17 @@ namespace StudentManagingSystem_API.DTO
         public string? LastModifiedBy { get; set; }
         [JsonIgnore]
         public DateTime? LastModifiedDate { get; set; }
+    }
+    #endregion
+
+    #region Login
+    public class LoginRequestModel
+    {
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
     }
     #endregion
 }

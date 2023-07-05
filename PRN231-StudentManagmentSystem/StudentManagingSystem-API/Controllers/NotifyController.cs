@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessObject.Model;
 using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagingSystem_API.DTO;
@@ -9,6 +10,7 @@ namespace StudentManagingSystem_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotifyController : ControllerBase
     {
         private readonly INotiRepository _repository;
@@ -20,6 +22,7 @@ namespace StudentManagingSystem_API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] NotifyAddRequest rq)
         {
@@ -36,6 +39,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] NotifyUpdateRequest rq)
         {
@@ -52,6 +56,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] Guid Id)
         {
@@ -66,6 +71,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll()
         {
@@ -80,6 +86,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] NotifySearchRequest rq)
         {
@@ -94,6 +101,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("detail")]
         public async Task<IActionResult> GetDetail([FromQuery] Guid Id)
         {

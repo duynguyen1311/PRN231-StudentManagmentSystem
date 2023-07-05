@@ -13,6 +13,7 @@ namespace BusinessObject.Model
         public Subject? Subject { get; set; }
         public float? ProgessPoint { get; set; }
         public float? MidtermPoint { get; set; }
+        public bool? IsPassed { get; set; }
         public float? FinalPoint { get; set; }
     }
 }

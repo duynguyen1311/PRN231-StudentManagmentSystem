@@ -2,25 +2,33 @@
 using BusinessObject.Model;
 using BusinessObject.Utility;
 using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using OfficeOpenXml.Style;
+using OfficeOpenXml;
 using StudentManagingSystem_API.DTO;
 
 namespace StudentManagingSystem_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClassRoomController : ControllerBase
     {
         private readonly IRoomRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public ClassRoomController(IRoomRepository repository, IMapper mapper)
+        public ClassRoomController(IRoomRepository repository, IMapper mapper, IConfiguration configuration)
         {
             _repository = repository;
             _mapper = mapper;
+            _configuration = configuration;
         }
 
+        [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] ClassRoomAddRequest rq)
         {
@@ -37,12 +45,13 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] ClassRoomUpdateRequest rq)
         {
             try
             {
-                rq.LastModifiedDate = DateTime.Now; 
+                rq.LastModifiedDate = DateTime.Now;
                 var map = _mapper.Map<ClassRoom>(rq);
                 await _repository.Update(map);
                 return Ok();
@@ -53,6 +62,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] Guid Id)
         {
@@ -67,6 +77,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll()
         {
@@ -81,12 +92,13 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] ClassRoomSearchRequest rq)
         {
             try
             {
-                var res = await _repository.Search(rq.keyword, rq.status,rq.teacherId, rq.page, rq.pagesize);
+                var res = await _repository.Search(rq.keyword, rq.status, rq.teacherId, rq.page, rq.pagesize);
                 var map = _mapper.Map<PagedList<ClassRoomSearchResponse>>(res);
                 return Ok(map);
             }
@@ -96,6 +108,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("listStudentByClass")]
         public async Task<IActionResult> ListStudentByClass([FromQuery] Guid Id)
         {
@@ -110,12 +123,13 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("searchClassByStudent")]
         public async Task<IActionResult> SearchClassByStudent([FromBody] ClassRoomSearchByStudentRequest rq)
         {
             try
             {
-                var res = await _repository.SearchClassByStudent(rq.keyword,rq.status,rq.studentId,rq.page,rq.pagesize);
+                var res = await _repository.SearchClassByStudent(rq.keyword, rq.status, rq.studentId, rq.page, rq.pagesize);
                 return Ok(res);
             }
             catch (Exception ex)
@@ -124,7 +138,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpGet("detail")]
         public async Task<IActionResult> GetDetail([FromQuery] Guid Id)
         {
@@ -137,6 +151,96 @@ namespace StudentManagingSystem_API.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("Export")]
+        public async Task<IActionResult> ExportFile(ClassRoomSearchRequest rq)
+        {
+            try
+            {
+                //var request = new List<Guid>();
+                List<Guid>? request;
+                var rp2 = await _repository.Search(rq.keyword, rq.status, rq.teacherId, rq.page, rq.pagesize);
+                request = rp2.Data.Select(i => i.Id).ToList();
+
+                ExcelPackage.LicenseContext = LicenseContext.Commercial;
+                var templatePath = _configuration.GetValue<string>("PathTemplate:classExport");
+                var file = new FileStream(templatePath, FileMode.Open);
+                using (ExcelPackage pkg = new ExcelPackage(file))
+                {
+                    var workSheet = pkg.Workbook.Worksheets["Class"];
+                    var listHeader = new List<string> { "Id", "Class Code", "Class Name", "Department", "Teacher", "Status" };
+                    for (int i = 0; i < listHeader.Count; i++)
+                    {
+                        workSheet.Cells[1, i + 1].Value = listHeader[i];
+                        workSheet.Cells[1, i + 1].Style.Font.Bold = true;
+                        workSheet.Cells[1, i + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    }
+
+
+                    var listClassRoom = new List<ClassRoom>();
+                    foreach (var item in request)
+                    {
+                        var temp3 = await _repository.GetById(item);
+                        listClassRoom.Add(temp3);
+                    }
+                    var listCusTypeExport = listClassRoom.Select(i => new ClassRoomExport
+                    {
+                        Id = i.Id,
+                        ClassCode = i.ClassCode,
+                        ClassName = i.ClassName,
+                        Department = (i.Department != null) ? i.Department.DepartmentName : null,
+                        Teacher = (i.User != null) ? i.User.FullName: null,
+                        Status = i.Status
+                    }).ToList();
+                    int row = 2;
+                    for (int i = 0; i < listCusTypeExport.Count; i++)
+                    {
+                        workSheet.Cells[row, 1].Value = listCusTypeExport[i].Id;
+                        workSheet.Cells[row, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        workSheet.Cells[row, 2].Value = listCusTypeExport[i].ClassCode;
+                        workSheet.Cells[row, 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        workSheet.Cells[row, 3].Value = listCusTypeExport[i].ClassName;
+                        workSheet.Cells[row, 3].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        workSheet.Cells[row, 4].Value = listCusTypeExport[i].Department;
+                        workSheet.Cells[row, 4].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        workSheet.Cells[row, 5].Value = listCusTypeExport[i].Teacher;
+                        workSheet.Cells[row, 5].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        workSheet.Cells[row, 6].Value = listCusTypeExport[i].Status == true ? "Hoạt động" : "Không hoạt động";
+                        workSheet.Cells[row, 6].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                        row++;
+                    }
+                    workSheet.Cells.AutoFitColumns();
+                    workSheet.Column(1).Width = 36;
+                    workSheet.Rows.Height = 25;
+                    workSheet.Cells.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    workSheet.Cells.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    pkg.Save();
+                    try
+                    {
+                        using (var stream = new MemoryStream())
+                        {
+                            pkg.SaveAs(stream);
+                            var content = stream.ToArray();
+                            //string timestamp = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss").ToUpper().Remove('-').Remove(' ').Remove(':').Trim();
+                            return File(
+                                content,
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                $"ClassRoom_export.xlsx");
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return StatusCode(500, ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
         }
     }
