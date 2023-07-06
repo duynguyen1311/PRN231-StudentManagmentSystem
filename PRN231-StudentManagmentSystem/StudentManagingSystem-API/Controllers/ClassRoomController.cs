@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using OfficeOpenXml.Style;
 using OfficeOpenXml;
 using StudentManagingSystem_API.DTO;
+using System.Security.Claims;
 
 namespace StudentManagingSystem_API.Controllers
 {
@@ -28,6 +29,17 @@ namespace StudentManagingSystem_API.Controllers
             _configuration = configuration;
         }
 
+        private string? GetUserIdFromConext()
+        {
+            var a = User.FindFirstValue(ClaimTypes.Sid);
+            return a;
+        }
+
+        private string? GetNameFromConext()
+        {
+            return User.FindFirstValue(ClaimTypes.Name);
+        }
+
         [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] ClassRoomAddRequest rq)
@@ -35,6 +47,7 @@ namespace StudentManagingSystem_API.Controllers
             try
             {
                 rq.CreatedDate = DateTime.Now;
+                rq.CreatedBy = GetNameFromConext();
                 var map = _mapper.Map<ClassRoom>(rq);
                 await _repository.Add(map);
                 return Ok();
@@ -52,6 +65,7 @@ namespace StudentManagingSystem_API.Controllers
             try
             {
                 rq.LastModifiedDate = DateTime.Now;
+                rq.LastModifiedBy = GetNameFromConext();
                 var map = _mapper.Map<ClassRoom>(rq);
                 await _repository.Update(map);
                 return Ok();
@@ -98,9 +112,18 @@ namespace StudentManagingSystem_API.Controllers
         {
             try
             {
-                var res = await _repository.Search(rq.keyword, rq.status, rq.teacherId, rq.page, rq.pagesize);
-                var map = _mapper.Map<PagedList<ClassRoomSearchResponse>>(res);
-                return Ok(map);
+                if (User.IsInRole(RoleConstant.TEACHER))
+                {
+                    var res = await _repository.Search(rq.keyword, rq.status, GetUserIdFromConext(), rq.page, rq.pagesize);
+                    var map = _mapper.Map<PagedList<ClassRoomSearchResponse>>(res);
+                    return Ok(map);
+                }
+                else
+                {
+                    var res = await _repository.Search(rq.keyword, rq.status, rq.teacherId, rq.page, rq.pagesize);
+                    var map = _mapper.Map<PagedList<ClassRoomSearchResponse>>(res);
+                    return Ok(map);
+                }
             }
             catch (Exception ex)
             {
@@ -129,6 +152,7 @@ namespace StudentManagingSystem_API.Controllers
         {
             try
             {
+                rq.studentId = Guid.Parse(GetUserIdFromConext());
                 var res = await _repository.SearchClassByStudent(rq.keyword, rq.status, rq.studentId, rq.page, rq.pagesize);
                 return Ok(res);
             }
@@ -162,8 +186,24 @@ namespace StudentManagingSystem_API.Controllers
             {
                 //var request = new List<Guid>();
                 List<Guid>? request;
-                var rp2 = await _repository.Search(rq.keyword, rq.status, rq.teacherId, rq.page, rq.pagesize);
-                request = rp2.Data.Select(i => i.Id).ToList();
+                if (User.IsInRole(RoleConstant.ADMIN))
+                {
+                    var rp2 = await _repository.Search(rq.keyword, rq.status, rq.teacherId, rq.page, rq.pagesize);
+                    request = rp2.Data.Select(i => i.Id).ToList();
+                }
+                else if (User.IsInRole(RoleConstant.TEACHER))
+                {
+                    rq.teacherId = GetUserIdFromConext();
+                    var rp2 = await _repository.Search(rq.keyword, rq.status, rq.teacherId, rq.page, rq.pagesize);
+                    request = rp2.Data.Select(i => i.Id).ToList();
+                }
+                else
+                {
+
+                    rq.teacherId = GetUserIdFromConext();
+                    var rp2 = await _repository.SearchClassByStudent(rq.keyword, rq.status, Guid.Parse(rq.teacherId), rq.page, rq.pagesize);
+                    request = rp2.Data.Select(i => i.Id).ToList();
+                }
 
                 ExcelPackage.LicenseContext = LicenseContext.Commercial;
                 var templatePath = _configuration.GetValue<string>("PathTemplate:classExport");
@@ -192,7 +232,7 @@ namespace StudentManagingSystem_API.Controllers
                         ClassCode = i.ClassCode,
                         ClassName = i.ClassName,
                         Department = (i.Department != null) ? i.Department.DepartmentName : null,
-                        Teacher = (i.User != null) ? i.User.FullName: null,
+                        Teacher = (i.User != null) ? i.User.FullName : null,
                         Status = i.Status
                     }).ToList();
                     int row = 2;

@@ -64,6 +64,9 @@ namespace StudentManagingSystem_API.Controllers
                 var response = new LoginResponse();
                 response.Token = tokenWrite;
                 response.Role = role.FirstOrDefault();
+                response.Id = user.Id;
+                response.FullName = user.FullName;
+                response.Email = user.Email;
                 return Ok(response);
             }
             else

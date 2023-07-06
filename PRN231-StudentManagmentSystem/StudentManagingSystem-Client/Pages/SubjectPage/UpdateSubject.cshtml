@@ -1,0 +1,139 @@
+﻿@page
+@using BusinessObject.Utility;
+@model StudentManagingSystem_Client.Pages.SubjectPage.UpdateSubjectModel
+@{
+}
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        @*<div class="title">
+                        <h4>Form</h4>
+                        </div>*@
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-page="Subject">Subject List</a></li>
+                                @if (User.IsInRole(RoleConstant.ADMIN))
+                                {
+                                    <li class="breadcrumb-item active" aria-current="page">Edit Subject</li>
+                                }
+                                else
+                                {
+                                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                                }
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Default Basic Forms Start -->
+            @if (User.IsInRole(RoleConstant.ADMIN))
+            {
+                <div class="pd-20 card-box mb-30">
+                    <form method="post">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.Id" class="form-control" type="hidden" placeholder="Subject name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.SubjectName" class="col-sm-12 col-md-2 col-form-label">Subject Name</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.SubjectName" class="form-control" type="text" placeholder="Subject name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.SubjectCode" class="col-sm-12 col-md-2 col-form-label">Subject Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.SubjectCode" class="form-control" type="text" placeholder="Subject code">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.Description" class="col-sm-12 col-md-2 col-form-label">Description</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.Description" class="form-control" type="text" placeholder="Description">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.Semester" class="col-sm-12 col-md-2 col-form-label">Semester</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.Semester" class="form-control" type="number" placeholder="Semester">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.Status" class="col-sm-12 col-md-2 col-form-label">Status</label>
+                            <div class="col-sm-12 col-md-10">
+                                <select asp-for="Subject.Status" class="custom-select col-12">
+                                    <option selected="">Choose...</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="btn-list">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a asp-page="Subject" type="submit" class="btn btn-danger">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+
+            }
+            else
+            {
+                <div class="pd-20 card-box mb-30">
+                    <form method="post">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.Id" class="form-control" type="hidden" placeholder="Subject name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.SubjectName" class="col-sm-12 col-md-2 col-form-label">Subject Name</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.SubjectName" class="form-control" type="text" placeholder="Subject name" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.SubjectCode" class="col-sm-12 col-md-2 col-form-label">Subject Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.SubjectCode" class="form-control" type="text" placeholder="Subject code" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.Description" class="col-sm-12 col-md-2 col-form-label">Description</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.Description" class="form-control" type="text" placeholder="Description" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.Semester" class="col-sm-12 col-md-2 col-form-label">Semester</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Subject.Semester" class="form-control" type="number" placeholder="Semester" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Subject.Status" class="col-sm-12 col-md-2 col-form-label">Status</label>
+                            <div class="col-sm-12 col-md-10">
+                                <select asp-for="Subject.Status" class="custom-select col-12" disabled="disabled">
+                                    <option selected="">Choose...</option>
+                                    <option value="true">True</option>
+                                    <option value="false">False</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="btn-list">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a asp-page="Subject" type="submit" class="btn btn-primary">Back</a>
+                        </div>
+                    </form>
+                </div>
+            }
+            <!-- Default Basic Forms End -->
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+﻿@model BusinessObject.Model.Notification
+
+<div class="modal fade bs-example-modal-lg" id="detail-@Model.Id" tabindex="-1"
+     role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form>
+                    <ol class="breadcrumb">
+                        <li>
+                            <span id="ctl00_lblNavigation">
+                                <a href="../Student.aspx">Home</a>&nbsp;|&nbsp;<b>Notification</b>
+                            </span>
+                        </li>
+                    </ol>
+                    <table>
+                        <tbody>
+                            <tr style="border-bottom: 0 none">
+                                <td>
+                                    <div>
+                                        <div id="ctl00_mainContent_divContent">
+                                            <span class="fon31">
+                                                @Model.Title
+                                            </span><br>Post by
+                                            @Model.CreatedBy on @Model.CreatedDate
+                                            <hr>
+                                            <p>
+                                                @Model.Content
+                                            </p>
+                                            @Model.CreatedBy
+                                        </div>
+                                        <div>
+                                            <hr><b>Link</b> :
+                                            <a href="@Model.Link">
+                                                @Model.Link
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

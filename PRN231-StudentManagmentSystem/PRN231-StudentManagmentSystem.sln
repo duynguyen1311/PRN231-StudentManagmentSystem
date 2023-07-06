@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{BC0836EF-8DBC-4470-9912-3284DFA88D84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{BC0836EF-8DBC-4470-9912-3284DFA88D84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{FD97AE02-6BFA-4AF3-B352-6B8189AA72A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{FD97AE02-6BFA-4AF3-B352-6B8189AA72A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentManagingSystem-API", "StudentManagingSystem-API\StudentManagingSystem-API.csproj", "{F9232CAB-ED79-44DA-90DD-A356BBBA9420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagingSystem-API", "StudentManagingSystem-API\StudentManagingSystem-API.csproj", "{F9232CAB-ED79-44DA-90DD-A356BBBA9420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentManagingSystem-Client", "StudentManagingSystem-Client\StudentManagingSystem-Client.csproj", "{50AE84EF-6CDC-48CF-9AB3-B8342F7BF5B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagingSystem-Client", "StudentManagingSystem-Client\StudentManagingSystem-Client.csproj", "{50AE84EF-6CDC-48CF-9AB3-B8342F7BF5B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,116 @@
+﻿@page
+@model StudentManagingSystem_Client.Pages.StudentPage.UpdateStudentModel
+@{
+}
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        @*<div class="title">
+                        <h4>Form</h4>
+                        </div>*@
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-page="Student">Student List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Edit Student</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Default Basic Forms Start -->
+            <div class="pd-20 card-box mb-30">
+                <form method="post">
+                    <div class="form-group row">
+                        <label asp-for="Student.Id" class="col-sm-12 col-md-2 col-form-label">Department Name</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.Id" class="form-control" type="hidden">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.StudentName" class="col-sm-12 col-md-2 col-form-label">Student Name</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.StudentName" class="form-control" type="text" placeholder="Student name" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.StudentCode" class="col-sm-12 col-md-2 col-form-label">Student Code</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.StudentCode" class="form-control" type="text" placeholder="Student code" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.InSemester" class="col-sm-12 col-md-2 col-form-label">Semester</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.InSemester" class="form-control" type="number" placeholder="Semester" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.Email" class="col-sm-12 col-md-2 col-form-label">Email</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.Email" class="form-control" type="text" placeholder="Email" required="required">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.Address" class="col-sm-12 col-md-2 col-form-label">Address</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.Address" class="form-control" type="text" placeholder="Address">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.Phone" class="col-sm-12 col-md-2 col-form-label">Phone Number</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.Phone" class="form-control" type="number" placeholder="Phone">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.Gender" class="col-sm-12 col-md-2 col-form-label">Gender</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select asp-for="Student.Gender" class="custom-select col-12">
+                                <option selected="">Choose...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Student.DOB" class="col-sm-12 col-md-2 col-form-label">DOB</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Student.DOB" class="form-control date-picker" type="text" placeholder="DOB">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>@Html.LabelFor(c=>c.Student.ClassRoomId)</label>
+                        <select asp-for="Student.ClassRoomId" class="custom-select2 form-control" style="width: 100%; height: 38px;">
+                            @foreach (var item in Model.listClass)
+                            {
+                                <option value="@item.Id">@item.ClassName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-2 col-form-label">Status</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select asp-for="Student.Status" class="custom-select col-12">
+                                <option selected="">Choose...</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-list">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-page="Student" type="submit" class="btn btn-danger">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <!-- Default Basic Forms End -->
+
+        </div>
+    </div>
+</div>

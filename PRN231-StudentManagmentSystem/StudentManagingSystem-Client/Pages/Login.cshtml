@@ -1,0 +1,87 @@
+﻿@page
+@model StudentManagingSystem_Client.Pages.LoginModel
+@{
+    Layout = "_LoginLayout";
+}
+
+<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 col-lg-7">
+                <img src="vendors/images/login-page-img.png" alt="">
+            </div>
+            <div class="col-md-6 col-lg-5">
+                <div class="login-box bg-white box-shadow border-radius-10">
+                    <div class="login-title">
+                        <h2 class="text-center text-primary">Login</h2>
+                    </div>
+                    <form method="post">
+                        <div class="select-role">
+                            @{
+                                if (ViewData["Title"] != null)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        @ViewData["Title"]
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div />
+                                }
+
+                            }
+                        </div>
+                        <div class="input-group custom">
+                            <input type="text" class="form-control form-control-lg" placeholder="Email" asp-for="Email">
+                            <div class="input-group-append custom">
+                                <span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
+                            </div>
+                        </div>
+                        <div class="input-group custom">
+                            <input type="password" class="form-control form-control-lg" placeholder="**********" asp-for="Password">
+                            <div class="input-group-append custom">
+                                <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
+                            </div>
+                        </div>
+                        <div class="row pb-30">
+                            <div class="col-6">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                    <label class="custom-control-label" for="customCheck1">Remember</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="input-group mb-0">
+                                    <!--
+                                        use code for form submit
+                                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Sign In">
+                                    -->
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign In</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- js -->
+<script src="vendors/scripts/core.js"></script>
+<script src="vendors/scripts/script.min.js"></script>
+<script src="vendors/scripts/process.js"></script>
+<script src="vendors/scripts/layout-settings.js"></script>
+@*<form method="post">
+    <div class="container">
+        <label asp-for="Login.Email">Email : </label>
+        <input type="text" placeholder="Enter Username" asp-for="Login.Email" required>
+        <label asp-for="Login.Password">Password : </label>
+        <input type="password" placeholder="Enter Password" asp-for="Login.Password" required>
+        <input type="checkbox" asp-for="Login.RememberMe" checked="checked"> Remember me
+        <button type="submit">Login</button>
+        <button type="button" class="cancelbtn"> Cancel</button>
+        Forgot <a href="#"> password? </a>
+    </div>
+</form>     *@

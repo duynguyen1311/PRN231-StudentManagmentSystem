@@ -9,6 +9,7 @@ using OfficeOpenXml.Style;
 using OfficeOpenXml;
 using StudentManagingSystem_API.DTO;
 using System.Security.Claims;
+using BusinessObject.Utility;
 
 namespace StudentManagingSystem_API.Controllers
 {
@@ -159,8 +160,18 @@ namespace StudentManagingSystem_API.Controllers
             {
                 //var request = new List<Guid>();
                 List<Guid>? request;
-                var rp2 = await _repository.Search(rq.keyword, rq.status,rq.semester, rq.page, rq.pagesize);
-                request = rp2.Data.Select(i => i.Id).ToList();
+                if (User.IsInRole(RoleConstant.STUDENT))
+                {
+                    var studentId = Guid.Parse(GetUserIdFromConext());
+                    var rp2 = await _repository.SearchByStudent(rq.keyword, rq.status, studentId, rq.semester, rq.page, rq.pagesize);
+                    request = rp2.Data.Select(i => i.Id).ToList();
+                }
+                else
+                {
+                    var rp2 = await _repository.Search(rq.keyword, rq.status, rq.semester, rq.page, rq.pagesize);
+                    request = rp2.Data.Select(i => i.Id).ToList();
+                }
+                
 
                 ExcelPackage.LicenseContext = LicenseContext.Commercial;
                 var templatePath = _configuration.GetValue<string>("PathTemplate:subjectExport");

@@ -1,0 +1,70 @@
+﻿@page
+@model StudentManagingSystem_Client.Pages.NotificationPage.AddNotificationModel
+@{
+}
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        @*<div class="title">
+                        <h4>Form</h4>
+                        </div>*@
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-page="Notification">Notification List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Add Notification</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Default Basic Forms Start -->
+            <div class="pd-20 card-box mb-30">
+                <form method="post">
+                    <div class="form-group row">
+                        <label asp-for="NotificationAddRequest.Title" class="col-sm-12 col-md-2 col-form-label">Title</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="NotificationAddRequest.Title" class="form-control" type="text" placeholder="Title">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="NotificationAddRequest.SubTitle" class="col-sm-12 col-md-2 col-form-label">Subtitle</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="NotificationAddRequest.SubTitle" class="form-control" type="text" placeholder="Subtitle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NotificationAddRequest.Content" class="col-sm-12 col-md-2 col-form-label">Content</label>
+                        <textarea asp-for="NotificationAddRequest.Content" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="NotificationAddRequest.Link" class="col-sm-12 col-md-2 col-form-label">Link</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="NotificationAddRequest.Link" class="form-control" type="url" placeholder="Link">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="NotificationAddRequest.Status" class="col-sm-12 col-md-2 col-form-label">Status</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select asp-for="NotificationAddRequest.Status" class="custom-select col-12">
+                                <option selected="">Choose...</option>
+                                <option value="true">Hoạt động</option>
+                                <option value="false">Không hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-list">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-page="Notification" type="submit" class="btn btn-danger">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <!-- Default Basic Forms End -->
+
+        </div>
+    </div>
+</div>

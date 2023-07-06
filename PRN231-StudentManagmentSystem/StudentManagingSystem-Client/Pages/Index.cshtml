@@ -3,8 +3,43 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<div class="mobile-menu-overlay"></div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="title">
+                            <h4>Notifications</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-wrap">
+                <div id="accordion">
+                    @foreach (var item in Model.listNoti)
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <button class="btn btn-block" data-toggle="collapse" data-target="#faq1">
+                                    @item.Title
+                                </button>
+                            </div>
+                            <div id="faq1" class="collapse show" data-parent="#accordion">
+                                <div class="card-body">
+                                    @item.Content
+                                    <br>
+                                    <br>
+                                    <a class="btn btn-info" data-toggle="modal" data-target="@("#detail-" + item.Id)" data-url="@Url.Action($"Details/{item.Id}")">Details</a>
+                                    @await Html.PartialAsync("_NotificationPartial", item)
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
