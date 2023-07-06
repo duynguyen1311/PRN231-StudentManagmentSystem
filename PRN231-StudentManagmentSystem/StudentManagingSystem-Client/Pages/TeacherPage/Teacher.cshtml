@@ -1,4 +1,178 @@
 ﻿@page
+@using BusinessObject.Utility;
 @model StudentManagingSystem_Client.Pages.TeacherPage.TeacherModel
 @{
 }
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="title">
+                            <h4>Teacher List</h4>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Teacher</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    @if (User.IsInRole(RoleConstant.ADMIN))
+                    {
+                        <div class="col-md-3 col-sm-12 text-right">
+                            <div class="dropdown">
+                                <a class="btn btn-primary" asp-page="AddTeacher">
+                                    Add Teacher
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    @if (User.IsInRole(RoleConstant.ADMIN))
+                    {
+                        <div class="col-md-1 col-sm-12 text-left">
+                            <div class="dropdown">
+                                <a class="btn btn-outline-danger" asp-page="ExportDepartment">
+                                    Export
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    @if (User.IsInRole(RoleConstant.ADMIN))
+                    {
+                        <div class="col-md-1 col-sm-12 text-left">
+                            <div class="dropdown">
+                                <a class="btn btn-outline-success" asp-page="ImportDepartment">
+                                    Import
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <form method="get">
+                <div class="row mb-15">
+                    <div class="col-md-4">
+                        <div class="header-search">
+                            <form method="get">
+                                <div class="form-group mb-0" style="display:flex">
+                                    <i style="justify-content: flex-start;"
+                                       class="dw dw-search2 search-icon mr-10 mt-15"></i>
+                                    <input asp-for="Keyword" style="justify-content: flex-end;" type="text"
+                                           class="form-control search-input" placeholder="Search Here">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div style="display: flex;">
+                            <p style="justify-content: flex-start; margin-top:9px" class="mr-10">Status</p>
+                            <div style="justify-content: flex-end; width: 200px;">
+                                <select asp-for="Status" class="custom-select">
+                                    <option selected="" value="null">All</option>
+                                    <option value="True">Hoạt động</option>
+                                    <option value="False">Không hoạt động</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" style="height: 44px;margin-left: 20px;width: 114px;" class="btn btn-success">Filter</button>
+                    @*<div class="col-md-3">
+                    <div style="display: flex;">
+                    <p style="justify-content: flex-start;margin-top:9px" class="mr-10">Status</p>
+                    <div style="justify-content: flex-end; width: 200px;">
+                    <select class="custom-select">
+                    <option selected="">All</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                    </select>
+                    </div>
+                    </div>
+
+                    </div>*@
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered ">
+                    <thead style="background-color: lightgray">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Created Date</th>
+                            <th>Last Modified Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ListTeacher.Data)
+                        {
+                            <tr>
+                                <td class="table-plus">@item.FullName</td>
+                                <td>@item.Email</td>
+                                <td>@item.Adress</td>
+                                <td>@item.Phone</td>
+                                <td>@(item.Status == true ? "Hoạt động" : "Không hoạt động")</td>
+                                <td>@(item.CreatedDate != null ? item.CreatedDate.Value.ToShortDateString() : "")</td>
+                                <td>@(item.LastModifiedDate != null ? item.LastModifiedDate.Value.ToShortDateString() : "")</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                            <i class="dw dw-more"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                            <a class="dropdown-item" asp-page="UpdateTeacher" asp-route-id="@item.Id" asp-route-pageIndex="@Model.PageIndex"><i class="dw dw-edit2"></i> Edit</a>
+                                            <a class="dropdown-item" asp-page="DeleteTeacher" asp-route-id="@item.Id" onclick="return confirmDelete(event)"><i class="dw dw-delete-3"></i> Delete</a>
+                                        </div>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            @{
+                var prev = Model.PageIndex > 1 ? "" : "disabled";
+                var next = Model.PageIndex <= Model.TotalPage ? "" : "disabled";
+            }
+            <div class="row">
+                <div class="btn-group mb-15" style="margin-left:15px;">
+                    <a class="btn btn-light @prev" asp-page="./Teacher" asp-route-pageIndex="@(Model.PageIndex-1)">Previous</a>
+                    @for (int i = 1; i <= Model.TotalPage; i++)
+                    {
+                        <a class="btn @(i == Model.PageIndex ? "btn-success" : "btn-light")" asp-page="./Teacher" asp-route-pageIndex="@i">@i</a>
+                    }
+                    <a class="btn btn-light @next" asp-page="./Teacher" asp-route-pageIndex="@(Model.PageIndex+1)">Next</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmDelete(event) {
+        event.preventDefault(); // prevent the default action of the button click
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // if the user clicks the confirm button, continue with the delete action
+                window.location.href = event.target.href;
+            }
+        });
+        return false;
+    }
+</script>

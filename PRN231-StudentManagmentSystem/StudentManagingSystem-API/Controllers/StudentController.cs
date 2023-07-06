@@ -114,6 +114,8 @@ namespace StudentManagingSystem_API.Controllers
             try
             {
                 await _repository.Delete(Id);
+                var user = await _userManager.FindByIdAsync(Id.ToString());
+                await _userManager.DeleteAsync(user);
                 return Ok();
             }
             catch (Exception ex)

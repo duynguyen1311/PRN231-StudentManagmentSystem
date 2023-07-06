@@ -12,7 +12,7 @@ namespace StudentManagingSystem_Client.Pages.NotificationPage
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             var client = new ClientService(HttpContext);
-            var res = await client.Delete("/api/Notification/delete", $"?id={id}");
+            var res = await client.Delete("/api/Notify/delete", $"?id={id}");
             return RedirectToPage("/NotificationPage/Notification");
         }
     }

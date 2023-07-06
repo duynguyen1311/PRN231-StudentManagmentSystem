@@ -24,7 +24,7 @@ namespace StudentManagingSystem_Client.Pages.NotificationPage
             try
             {
                 var client = new ClientService(HttpContext);
-                var res = await client.PostAdd("/api/Notification/add", NotificationAddRequest);
+                var res = await client.PostAdd("/api/Notify/add", NotificationAddRequest);
                 return RedirectToPage("/NotificationPage/Notification");
             }
             catch (Exception ex)

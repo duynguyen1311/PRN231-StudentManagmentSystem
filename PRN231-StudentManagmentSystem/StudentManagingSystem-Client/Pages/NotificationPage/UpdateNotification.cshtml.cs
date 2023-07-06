@@ -21,13 +21,13 @@ namespace StudentManagingSystem_Client.Pages.NotificationPage
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             var client = new ClientService(HttpContext);
-            Notification = await client.GetDetail<Notification>("/api/Notification/detail", $"?id={id}");
+            Notification = await client.GetDetail<Notification>("/api/Notify/detail", $"?id={id}");
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()
         {
             var client = new ClientService(HttpContext);
-            var res = await client.Put("/api/Notification/update", Notification);
+            var res = await client.Put("/api/Notify/update", Notification);
             return RedirectToPage("/NotificationPage/Notification", new { pageIndex = PageIndex });
         }
     }

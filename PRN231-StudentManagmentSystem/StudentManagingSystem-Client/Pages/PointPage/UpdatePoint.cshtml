@@ -1,0 +1,142 @@
+﻿@page
+@model StudentManagingSystem_Client.Pages.PointPage.UpdatePointModel
+@{
+}
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        @*<div class="title">
+                        <h4>Form</h4>
+                        </div>*@
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-page="Point">Mark List</a></li>
+                                @if (User.IsInRole(RoleConstant.ADMIN) || User.IsInRole(RoleConstant.TEACHER))
+                                {
+                                    <li class="breadcrumb-item active" aria-current="page">Edit Point</li>
+                                }
+                                else
+                                {
+                                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                                }
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Default Basic Forms Start -->
+            @if (User.IsInRole(RoleConstant.ADMIN) || User.IsInRole(RoleConstant.TEACHER))
+            {
+                <div class="pd-20 card-box mb-30">
+                    <form method="post">
+                        <div class="form-group row">
+                            <label asp-for="Point.Id" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.Id" class="form-control" type="hidden">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.LabelFor(c=>c.Point.SubjectId)</label>
+                            <select asp-for="Point.SubjectId" class="custom-select2 form-control disable" style="width: 100%; height: 38px;">
+                                @foreach (var item in Model.ListSubject)
+                                {
+                                    <option value="@item.Id">@item.SubjectName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>@Html.LabelFor(c=>c.Point.StudentId)</label>
+                            <select asp-for="Point.StudentId" class="custom-select2 form-control disable" style="width: 100%; height: 38px;">
+                                @foreach (var item in Model.ListStudent)
+                                {
+                                    <option value="@item.Id">@item.StudentName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Point.ProgessPoint" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.ProgessPoint" class="form-control" type="number" placeholder="Progress">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Point.MidtermPoint" class="col-sm-12 col-md-2 col-form-label">Midterm Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.MidtermPoint" class="form-control" type="number" placeholder="Midterm">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Point.FinalPoint" class="col-sm-12 col-md-2 col-form-label">Final Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.FinalPoint" class="form-control" type="number" placeholder="Final">
+                            </div>
+                        </div>
+                        <div class="btn-list">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <a asp-page="Point" type="submit" class="btn btn-danger">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="pd-20 card-box mb-30">
+                    <form method="post">
+                        <div class="form-group row">
+                            <label asp-for="Point.Id" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.Id" class="form-control" type="hidden">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select asp-for="Point.SubjectId" class="custom-select2 form-control disable" style="width: 100%; height: 38px;" disabled="disabled">
+                                @foreach (var item in Model.ListSubject)
+                                {
+                                    <option value="@item.Id">@item.SubjectName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Student</label>
+                            <select asp-for="Point.StudentId" class="custom-select2 form-control disable" style="width: 100%; height: 38px;" disabled="disabled">
+                                @foreach (var item in Model.ListStudent)
+                                {
+                                    <option value="@item.Id">@item.StudentName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Point.ProgessPoint" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.ProgessPoint" class="form-control" type="number" placeholder="Progress" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Point.MidtermPoint" class="col-sm-12 col-md-2 col-form-label">Midterm Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.MidtermPoint" class="form-control" type="number" placeholder="Midterm" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Point.FinalPoint" class="col-sm-12 col-md-2 col-form-label">Final Point</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Point.FinalPoint" class="form-control" type="number" placeholder="Final" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="btn-list">
+                            <a asp-page="Point" type="submit" class="btn btn-primary">Back</a>
+                        </div>
+                    </form>
+                </div>
+            }
+            <!-- Default Basic Forms End -->
+
+        </div>
+    </div>
+</div>

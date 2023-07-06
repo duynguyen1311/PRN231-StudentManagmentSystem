@@ -1,4 +1,6 @@
-﻿namespace StudentManagingSystem_Client.ViewModel
+﻿using System.Text.Json.Serialization;
+
+namespace StudentManagingSystem_Client.ViewModel
 {
     public class SubjectSearchRequest
     {

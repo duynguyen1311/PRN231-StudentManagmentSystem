@@ -49,7 +49,7 @@ namespace StudentManagingSystem_API.Controllers
                     Gender = rq.Gender,
                     DOB = rq.DOB,
                     Type = 1,
-                    Activated = true,
+                    Activated = rq.Status,
                     CreatedDate = rq.CreatedDate,
                     LastModifiedDate = null
                 };

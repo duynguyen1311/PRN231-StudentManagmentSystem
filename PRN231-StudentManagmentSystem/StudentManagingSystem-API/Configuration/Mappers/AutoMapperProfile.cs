@@ -52,13 +52,16 @@ namespace StudentManagingSystem_API.Configuration.Mappers
             //Teacher
             CreateMap(typeof(PagedList<AppUser>), typeof(PagedList<TeacherResponse>)).ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null)); ;
             CreateMap<AppUser, TeacherResponse>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
-
+            CreateMap<AppUser, TeacherResponse>()
+                .ForMember(destination => destination.Status, options => options.MapFrom(source => source.Activated));
             //Point
             CreateMap(typeof(PagedList<Point>), typeof(PagedList<PointResponse>)).ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null)); ;
             CreateMap<Point, PointResponse>()
                 .ForMember(destination => destination.StudentName, options => options.MapFrom(source => source.Student.StudentName))
-                .ForMember(destination => destination.SubjectName, options => options.MapFrom(source => source.Subject.SubjectName));
-
+                .ForMember(destination => destination.StudentCode, options => options.MapFrom(source => source.Student.StudentCode))
+                .ForMember(destination => destination.SubjectName, options => options.MapFrom(source => source.Subject.SubjectName))
+                .ForMember(destination => destination.SubjectCode, options => options.MapFrom(source => source.Subject.SubjectCode))
+                .ForMember(destination => destination.Semester, options => options.MapFrom(source => source.Subject.Semester));
 
             #endregion
 

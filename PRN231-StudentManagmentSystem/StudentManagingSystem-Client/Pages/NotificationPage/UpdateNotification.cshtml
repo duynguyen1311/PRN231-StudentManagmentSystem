@@ -26,15 +26,10 @@
             <div class="pd-20 card-box mb-30">
                 <form method="post">
                     <div class="form-group row">
+                        <input asp-for="Notification.Id" class="form-control" type="hidden" placeholder="Id">
                         <label asp-for="Notification.Title" class="col-sm-12 col-md-2 col-form-label">Title</label>
                         <div class="col-sm-12 col-md-10">
                             <input asp-for="Notification.Title" class="form-control" type="text" placeholder="Title">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label asp-for="Notification.Id" class="col-sm-12 col-md-2 col-form-label">Id</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input asp-for="Notification.Id" class="form-control" type="hidden" placeholder="Id">
                         </div>
                     </div>
                     <div class="form-group row">

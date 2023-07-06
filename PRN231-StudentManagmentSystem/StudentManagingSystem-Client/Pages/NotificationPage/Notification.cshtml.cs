@@ -30,7 +30,7 @@ namespace StudentManagingSystem_Client.Pages.NotificationPage
                 pagesize = pagesize
             };
 
-            ListNoti = await client.PostSearch<PagedList<Notification>>("/api/Notification/search", requestModel);
+            ListNoti = await client.PostSearch<PagedList<Notification>>("/api/Notify/search", requestModel);
             TotalPage = (int)(Math.Ceiling(ListNoti.TotalCount / (double)pagesize));
             return Page();
         }

@@ -2,3 +2,69 @@
 @model StudentManagingSystem_Client.Pages.TeacherPage.UpdateTeacherModel
 @{
 }
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-page="TeacherPage/Teacher">Teacher List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Edit Teacher</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Default Basic Forms Start -->
+            <div class="pd-20 card-box mb-30">
+                <form method="post">
+                    <input asp-for="Teacher.Id" class="form-control" type="hidden">
+                    <div class="form-group row">
+                        <label asp-for="Teacher.FullName" class="col-sm-12 col-md-2 col-form-label">Name</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Teacher.FullName" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Teacher.Email" class="col-sm-12 col-md-2 col-form-label">Email</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Teacher.Email" class="form-control" type="email">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Teacher.Adress" class="col-sm-12 col-md-2 col-form-label">Adress</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Teacher.Adress" class="form-control" type="text" placeholder="Adress">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Teacher.Phone" class="col-sm-12 col-md-2 col-form-label">Phone</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Teacher.Phone" class="form-control" type="text" placeholder="Phone">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Teacher.Activated" class="col-sm-12 col-md-2 col-form-label">Status</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select asp-for="Teacher.Activated" class="custom-select col-12">
+                                <option selected="">Choose...</option>
+                                <option value="true">Hoạt động</option>
+                                <option value="false">Không hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-list">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-page="Teacher" type="submit" class="btn btn-danger">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <!-- Default Basic Forms End -->
+
+        </div>
+    </div>
+</div>

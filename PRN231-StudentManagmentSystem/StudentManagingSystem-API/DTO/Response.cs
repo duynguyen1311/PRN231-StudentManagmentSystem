@@ -54,7 +54,7 @@ namespace StudentManagingSystem_API.DTO
         public string? Phone { get; set; }
         public string? Gender { get; set; }
         public DateTime? DOB { get; set; }
-        public bool? Status { get; set; }
+        public bool Status { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
         public string? LastModifiedBy { get; set; }
@@ -66,10 +66,13 @@ namespace StudentManagingSystem_API.DTO
         public Guid Id { get; set; }
         public Guid StudentId { get; set; }
         public string? StudentName { get; set; }
+        public string? StudentCode { get; set; }
         public Guid SubjectId { get; set; }
         public string? SubjectName { get; set; }
+        public string? SubjectCode { get; set; }
         public float? ProgessPoint { get; set; }
         public float? MidtermPoint { get; set; }
+        public int? Semester { get; set; }
         public bool? IsPassed { get; set; }
         public float? FinalPoint { get; set; }
         public string? CreatedBy { get; set; }

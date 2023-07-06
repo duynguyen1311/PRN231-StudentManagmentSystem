@@ -2,3 +2,113 @@
 @model StudentManagingSystem_Client.Pages.TeacherPage.AddTeacherModel
 @{
 }
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        @*<div class="title">
+                        <h4>Form</h4>
+                        </div>*@
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a asp-page="Teacher">Teacher List</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Add Teacher</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Default Basic Forms Start -->
+            <div class="pd-20 card-box mb-30">
+                <form method="post">
+                    <div class="form-group row">
+                        <label asp-for="Request.FullName" class="col-sm-12 col-md-2 col-form-label">Name</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Request.FullName" class="form-control" type="text" placeholder="Name" required="required">
+                        </div>
+                    </div>
+                    @if (ViewData["Title"] != null)
+                    {
+                        <div class="form-group row">
+                            <label asp-for="Request.Email" class="col-sm-12 col-md-2 col-form-label">Email</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Request.Email" class="form-control form-control-danger" type="email" placeholder="Email" required="required">
+                                <span asp-validation-for="Request.Email" class="text-danger"></span>
+                                <div style="margin-top: 10px;font-style: italic" ; class="form-control-feedback text-danger">
+                                    @ViewData["Title"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group row">
+                            <label asp-for="Request.Email" class="col-sm-12 col-md-2 col-form-label">Email</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="Request.Email" class="form-control" type="email" placeholder="Email" required="required">
+                                <span asp-validation-for="Request.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-group row">
+                        <label asp-for="Request.Password" class="col-sm-12 col-md-2 col-form-label">Password</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Request.Password" class="form-control" type="text" placeholder="Password" required="required">
+                            <span asp-validation-for="Request.Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Request.Adress" class="col-sm-12 col-md-2 col-form-label">Adress</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Request.Adress" class="form-control" type="text" placeholder="Adress">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Request.Phone" class="col-sm-12 col-md-2 col-form-label">Phone</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Request.Phone" class="form-control" type="text" placeholder="Phone">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Request.Gender" class="col-sm-12 col-md-2 col-form-label">Gender</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select asp-for="Request.Gender" class="custom-select col-12">
+                                <option selected="">Choose...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Request.DOB" class="col-sm-12 col-md-2 col-form-label">DOB</label>
+                        <div class="col-sm-12 col-md-10">
+                            <input asp-for="Request.DOB" class="form-control date-picker" type="text" placeholder="DOB">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="Request.Status" class="col-sm-12 col-md-2 col-form-label">Status</label>
+                        <div class="col-sm-12 col-md-10">
+                            <select asp-for="Request.Status" class="custom-select col-12">
+                                <option selected="">Choose...</option>
+                                <option value="true">Hoạt động</option>
+                                <option value="false">Không hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btn-list">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-page="Teacher" type="submit" class="btn btn-danger">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <!-- Default Basic Forms End -->
+
+        </div>
+    </div>
+</div>

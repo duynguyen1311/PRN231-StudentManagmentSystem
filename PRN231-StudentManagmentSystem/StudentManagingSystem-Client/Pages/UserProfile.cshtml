@@ -1,0 +1,253 @@
+﻿@*@page
+@model StudentManagingSystem_Client.Pages.UserProfileModel
+@{
+}
+<div class="mobile-menu-overlay"></div>
+
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="title">
+                            <h4>Profile</h4>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 mb-30">
+                    <div class="pd-20 card-box height-100-p">
+                        <div class="profile-photo">
+                            <a href="modal" data-toggle="modal" data-target="#modal" class="edit-avatar"><i class="fa fa-pencil"></i></a>
+                            <img src="vendors/images/photo1.jpg" alt="" class="avatar-photo">
+                            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body pd-5">
+                                            <div class="img-container">
+                                                <img id="image" src="vendors/images/photo2.jpg" alt="Picture">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Update" class="btn btn-primary">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h5 class="text-center h5 mb-0">@Model.Profile.FullName</h5>
+                        @if (Model.Profile.StudentCode != null)
+                        {
+                            <p asp-for="Profile.StudentCode" class="text-center text-muted font-14">@Model.Profile.StudentCode</p>
+                        }
+                        <div class="profile-info">
+                            <h5 class="mb-20 h5 text-blue">Contact Information</h5>
+                            <ul>
+                                @if (Model.Profile.Gender != null)
+                                {
+                                    <li>
+                                        <span>Gender:</span>
+                                        @Model.Profile.Gender
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <span>Gender:</span>
+                                    </li>
+                                }
+                                @if (Model.Profile.DOB != null)
+                                {
+                                    <li>
+                                        <span>Date of birth:</span>
+                                        @Model.Profile.DOB.Value.ToString("dd/MM/yyyy")
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <span>Date of birth:</span>
+                                    </li>
+                                }
+                                @if (Model.Profile.Email != null)
+                                {
+                                    <li>
+                                        <span>Email Address: </span>
+                                        @Model.Profile.Email
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <span>Email Address:</span>
+                                    </li>
+                                }
+                                @if (Model.Profile.Phone != null)
+                                {
+                                    <li>
+                                        <span>Phone Number: </span>
+                                        @Model.Profile.Phone
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <span>Phone Number:</span>
+                                    </li>
+                                }
+                                @if (Model.Profile.Adress != null)
+                                {
+                                    <li>
+                                        <span>Address:</span>
+                                        @Model.Profile.Adress
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <span>Address:</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 mb-30">
+                    <div class="card-box height-100-p overflow-hidden">
+                        <div class="profile-tab height-100-p">
+                            <div class="tab height-100-p">
+                                <ul class="nav nav-tabs customtab" role="tablist">
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#timeline" role="tab">Timeline</a>
+                                    </li> -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#setting" role="tab">Settings</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#tasks" role="tab">Change password</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade" id="setting" role="tabpanel">
+                                        <div class="profile-setting">
+                                            <form method="post">
+                                                <ul class="profile-edit-list row">
+                                                    <li class="weight-500 col-md-12">
+                                                        <h4 class="text-blue h5 mb-20">Edit Your Personal Setting</h4>
+                                                        <div class="form-group">
+                                                            <input asp-for="Profile.Id" class="form-control form-control-lg" type="hidden">
+                                                        </div>
+                                                        @if (User.IsInRole(RoleConstant.ADMIN))
+                                                        {
+                                                            <div class="form-group">
+                                                                <label asp-for="Profile.FullName">Full Name</label>
+                                                                <input asp-for="Profile.FullName" class="form-control form-control-lg" type="text">
+                                                            </div>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <label asp-for="Profile.FullName">Full Name</label>
+                                                                <input asp-for="Profile.FullName" class="form-control form-control-lg" readonly="readonly">
+                                                            </div>
+                                                        }
+                                                        @if (User.IsInRole(RoleConstant.ADMIN))
+                                                        {
+                                                            <div class="form-group">
+                                                                <label asp-for="Profile.Email">Email</label>
+                                                                <input asp-for="Profile.Email" class="form-control form-control-lg" type="email">
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-group">
+                                                                <label asp-for="Profile.Email">Email</label>
+                                                                <input asp-for="Profile.Email" class="form-control form-control-lg" readonly="readonly">
+                                                            </div>
+                                                        }
+                                                        <div class="form-group">
+                                                            <label asp-for="Profile.DOB">Date of birth</label>
+                                                            <input asp-for="Profile.DOB" class="form-control form-control-lg date-picker" type="text">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="Profile.Gender">Gender</label>
+                                                            <select asp-for="Profile.Gender" class="selectpicker form-control form-control-lg" data-style="btn-outline-secondary btn-lg" title="Not Chosen">
+                                                                <option>Male</option>
+                                                                <option>Female</option>
+                                                                <option>Other</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="Profile.Phone">Phone Number</label>
+                                                            <input asp-for="Profile.Phone" class="form-control form-control-lg" type="text">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="Profile.Adress">Address</label>
+                                                            <textarea asp-for="Profile.Adress" class="form-control"></textarea>
+                                                        </div>
+                                                        <div class="form-group mb-0">
+                                                            <input type="submit" class="btn btn-primary" value="Update Information">
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade show active"
+                                         id="tasks" role="tabpanel">
+                                        <div class="profile-setting">
+                                            <form method="post" asp-page-handler="ChangePassword">
+                                                <ul class="profile-edit-list row">
+                                                    <li class="weight-500 col-md-12">
+                                                        <h4 class="text-blue h5 mb-20">Change Password</h4>
+                                                        @if (TempData.ContainsKey("ErrorMessage"))
+                                                        {
+                                                            <p class="alert alert-danger">@TempData["ErrorMessage"]</p>
+                                                        }
+                                                        @if (TempData.ContainsKey("SuccessMessage"))
+                                                        {
+                                                            <p class="alert alert-success">@TempData["SuccessMessage"]</p>
+                                                        }
+                                                        <div class="form-group">
+                                                            <input asp-for="Profile.Id" class="form-control form-control-lg" type="hidden">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="Request.OldPassword">Old password</label>
+                                                            <input asp-for="Request.OldPassword" class="form-control form-control-lg" type="text" placeholder="Old password">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="Request.NewPassword">New password</label>
+                                                            <input asp-for="Request.NewPassword" class="form-control form-control-lg" type="text" placeholder="New password">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label asp-for="Request.ConfirmPassword">Confirm password</label>
+                                                            <input asp-for="Request.ConfirmPassword" class="form-control form-control-lg" type="text" placeholder="Confirm password">
+                                                        </div>
+                                                        <div class="form-group mb-0">
+                                                            <input type="submit" class="btn btn-primary" value="Submit">
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- Setting Tab End -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@

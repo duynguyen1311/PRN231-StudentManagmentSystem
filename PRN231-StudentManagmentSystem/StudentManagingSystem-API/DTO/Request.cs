@@ -99,7 +99,6 @@ namespace StudentManagingSystem_API.DTO
         public string ClassCode { get; set; }
         public bool? Status { get; set; }
         public Guid? DepartmentId { get; set; }
-        [JsonPropertyName("teacherId")]
         public string? UserId { get; set; }
         [JsonIgnore]
         public string? CreatedBy { get; set; }
@@ -275,6 +274,7 @@ namespace StudentManagingSystem_API.DTO
         public string? Phone { get; set; }
         public string? Gender { get; set; }
         public DateTime? DOB { get; set; }
+        public bool Status { get; set; }
         [JsonIgnore]
         public string? CreatedBy { get; set; }
         [JsonIgnore]

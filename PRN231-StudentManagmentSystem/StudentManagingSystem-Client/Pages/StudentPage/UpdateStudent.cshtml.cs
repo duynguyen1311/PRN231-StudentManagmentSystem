@@ -25,7 +25,7 @@ namespace StudentManagingSystem_Client.Pages.StudentPage
         {
             var client = new ClientService(HttpContext);
             listClass = await client.GetAll<List<ClassRoom>>("/api/ClassRoom/getall");
-            Student = await client.GetDetail<Student>("/api/Department/detail", $"?id={id}");
+            Student = await client.GetDetail<Student>("/api/Student/detail", $"?id={id}");
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()

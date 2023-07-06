@@ -1672,7 +1672,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
 .notification-list ul li a {
     display: block;
     position: relative;
-    padding: 10px 15px 10px 75px;
+    padding: 10px 15px 10px 10px;
     min-height: 75px;
     color: #666;
     font-size: 14px;
