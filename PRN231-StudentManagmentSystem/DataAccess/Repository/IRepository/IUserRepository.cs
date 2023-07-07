@@ -9,5 +9,6 @@ namespace DataAccess.Repository.IRepository
         Task<AppUser> GetById(string id);
         Task<PagedList<AppUser>> Search(string? keyword, bool? status, int page, int pagesize);
         Task<bool> CheckAddExistEmail(string email, CancellationToken cancellationToken = default);
+        Task Import(List<AppUser> listDept, CancellationToken cancellationToken = default);
     }
 }

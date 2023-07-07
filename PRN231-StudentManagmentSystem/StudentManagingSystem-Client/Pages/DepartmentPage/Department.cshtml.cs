@@ -28,7 +28,7 @@ namespace StudentManagingSystem_Client.Pages.DepartmentPage
             Status = status;
             if (pageIndex == 0) pageIndex = 1;
             PageIndex = pageIndex;
-            pagesize = 4;
+            pagesize = 5;
 
             var requestModel = new DepartmentSearchRequest
             {

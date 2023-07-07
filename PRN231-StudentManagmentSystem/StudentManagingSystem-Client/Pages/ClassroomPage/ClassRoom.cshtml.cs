@@ -35,7 +35,7 @@ namespace StudentManagingSystem_Client.Pages.ClassroomPage
                 Status = status;
                 if (pageIndex == 0) pageIndex = 1;
                 PageIndex = pageIndex;
-                pagesize = 4;
+                pagesize = 5;
 
                 var requestModel = new ClassRoomSearchRequest
                 {
@@ -55,7 +55,7 @@ namespace StudentManagingSystem_Client.Pages.ClassroomPage
                 Status = status;
                 if (pageIndex == 0) pageIndex = 1;
                 PageIndex = pageIndex;
-                pagesize = 4;
+                pagesize = 5;
 
                 var requestModel = new ClassRoomSearchByStudentRequest
                 {
@@ -75,7 +75,7 @@ namespace StudentManagingSystem_Client.Pages.ClassroomPage
                 Status = status;
                 if (pageIndex == 0) pageIndex = 1;
                 PageIndex = pageIndex;
-                pagesize = 4;
+                pagesize = 5;
 
                 var requestModel = new ClassRoomSearchRequest
                 {

@@ -135,48 +135,43 @@
                     </div>
                     @if (User.IsInRole(RoleConstant.ADMIN))
                     {
-                        <div class="col-md-3 col-sm-12 text-right">
-                            <div class="dropdown">
-                                <a class="btn btn-primary" asp-page="AddDepartment">
-                                    Add Department
-                                </a>
+                        <div class="col-md-6 col-sm-12 d-flex flex-row">
+                            <div class="col-md-4 col-sm-12 text-right">
+                                <div class="dropdown">
+                                    <a class="btn btn-primary" asp-page="AddDepartment">
+                                        Add Department
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-12 text-right">
+                                <div class="dropdown">
+                                    <a id="deleteButton" class="btn btn-danger disabled" asp-page="DeleteDepartment">
+                                        Delete
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-12 text-left">
+                                <div class="dropdown">
+                                    <a class="btn btn-outline-danger" asp-page="ExportDepartment">
+                                        Export
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-12 text-left">
+                                <div class="dropdown">
+                                    <a class="btn btn-outline-success" onclick="chooseFile()">
+                                        Import
+                                    </a>
+                                    <form id="uploadForm" method="post" enctype="multipart/form-data" asp-page="ImportDepartment" style="display: none;">
+                                        <input id="fileInput" type="file" name="file" accept=".xlsx, .xls" />
+                                        <button id="submitBtn" type="submit">Submit</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     }
-                    @if (User.IsInRole(RoleConstant.ADMIN))
-                    {
-                        <div class="col-md-1 col-sm-12 text-right">
-                            <div class="dropdown">
-                                <a id="deleteButton" class="btn btn-danger disabled" asp-page="DeleteDepartment">
-                                    Delete
-                                </a>
-                            </div>
-                        </div>
-                    }
-                    @if (User.IsInRole(RoleConstant.ADMIN))
-                    {
-                        <div class="col-md-1 col-sm-12 text-left">
-                            <div class="dropdown">
-                                <a class="btn btn-outline-danger" asp-page="ExportDepartment">
-                                    Export
-                                </a>
-                            </div>
-                        </div>
-                    }
-                    @if (User.IsInRole(RoleConstant.ADMIN))
-                    {
-                        <div class="col-md-1 col-sm-12 text-left">
-                            <div class="dropdown">
-                                <a class="btn btn-outline-success" onclick="chooseFile()">
-                                    Import
-                                </a>
-                                <form id="uploadForm" method="post" enctype="multipart/form-data" asp-page="ImportDepartment" style="display: none;">
-                                    <input id="fileInput" type="file" name="file" accept=".xlsx, .xls" />
-                                    <button id="submitBtn" type="submit">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-                    }
+                    
+                    
                 </div>
             </div>
             <form method="get">

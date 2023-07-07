@@ -153,6 +153,22 @@ namespace StudentManagingSystem_API.Controllers
         }
 
         [Authorize]
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportFile([FromBody] List<SubjectAddRequest> rq)
+        {
+            try
+            {
+                var map = _mapper.Map<List<Subject>>(rq);
+                await _repository.Import(map);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
         [HttpPost("Export")]
         public async Task<IActionResult> ExportFile(SubjectSearchRequest rq)
         {

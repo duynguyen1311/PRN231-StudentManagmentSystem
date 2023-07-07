@@ -14,13 +14,15 @@ namespace StudentManagingSystem_Client.Pages
     [Authorize]
     public class UserProfileModel : PageModel
     {
-        
+
+
         [BindProperty]
         public UserProfileResponse Profile { get; set; }
 
         [BindProperty]
         public ChangePasswordRequest Request { get; set; }
-        
+
+
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -42,37 +44,22 @@ namespace StudentManagingSystem_Client.Pages
                 return RedirectToPage("Error");
             }
         }
-        /*public async Task<IActionResult> OnPostChangePassword()
+        public async Task<IActionResult> OnPostChangePassword()
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(Profile.Id);
-                var checkOldPass = await _userManager.CheckPasswordAsync(user, Request.OldPassword);
-                if (checkOldPass)
+                var client = new ClientService(HttpContext);
+                var result = await client.PostReturnResponse("/api/User/changePassword", Request);
+                if (result.IsSuccessStatusCode)
                 {
-                    if (Request.NewPassword == Request.ConfirmPassword)
-                    {
-                        var result = await _userManager.ChangePasswordAsync(user, Request.OldPassword, Request.NewPassword);
-                        if (result.Succeeded)
-                        {
-                            TempData["SuccessMessage"] = "Change password successfully";
-                            return Page();
-                        }
-                        TempData["ErrorMessage"] = result.Errors.FirstOrDefault().Description;
-                        return Page();
-                    }
-                    else
-                    {
-                        TempData["ErrorMessage"] = "New password and confirm password are not the same";
-                        return Page();
-                    }
+                    TempData["SuccessMessage"] = result.Content.ReadAsStringAsync().Result;
+                    return Page();
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Old password is not correct";
+                    TempData["ErrorMessage"] = result.Content.ReadAsStringAsync().Result;
                     return Page();
                 }
-
 
             }
             catch (Exception ex)
@@ -80,7 +67,7 @@ namespace StudentManagingSystem_Client.Pages
                 TempData["ErrorMessage"] = ex.Message;
                 return RedirectToPage("Error");
             }
-        }*/
+        }
 
     }
 }

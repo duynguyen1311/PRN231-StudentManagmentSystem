@@ -44,6 +44,31 @@ namespace DataAccess.Repository
             return subject;
         }
 
+        public async Task Import(List<Subject> listDept, CancellationToken cancellationToken = default)
+        {
+            foreach (var item in listDept)
+            {
+                var dept = await _context.Subjects.FirstOrDefaultAsync(i => i.SubjectCode == item.SubjectCode);
+                if (dept == null)
+                {
+                    var newDept = new Subject()
+                    {
+                        Id = Guid.NewGuid(),
+                        SubjectCode = item.SubjectCode,
+                        SubjectName = item.SubjectName,
+                        Semester = item.Semester,
+                        Credit = item.Credit,
+                        Description = item.Description,
+                        Status = true,
+                        CreatedDate = DateTime.Now,
+                    };
+                    await _context.Subjects.AddAsync(newDept);
+                    await _context.SaveChangesAsync(cancellationToken);
+                }
+
+            }
+        }
+
         public async Task<PagedList<Subject>> Search(string? keyword, bool? status,int? semester, int page, int pagesize)
         {
             var query = _context.Subjects.AsQueryable();

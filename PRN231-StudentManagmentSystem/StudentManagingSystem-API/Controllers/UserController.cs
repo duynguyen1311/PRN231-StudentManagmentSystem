@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StudentManagingSystem_API.DTO;
+using System.Security.Claims;
 
 namespace StudentManagingSystem_API.Controllers
 {
@@ -24,6 +25,17 @@ namespace StudentManagingSystem_API.Controllers
             _userManager = userManager;
             _mapper = mapper;
             _repository = repository;
+        }
+
+        private string? GetUserIdFromConext()
+        {
+            var a = User.FindFirstValue(ClaimTypes.Sid);
+            return a;
+        }
+
+        private string? GetNameFromConext()
+        {
+            return User.FindFirstValue(ClaimTypes.Name);
         }
 
         [Authorize]
@@ -65,5 +77,28 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest rq)
+        {
+            var user = await _userManager.FindByIdAsync(GetUserIdFromConext());
+            var checkOldPass = await _userManager.CheckPasswordAsync(user, rq.OldPassword);
+            if (checkOldPass)
+            {
+                if (rq.NewPassword == rq.ConfirmPassword)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, rq.OldPassword, rq.NewPassword);
+                    return Ok("Changed password successfully !");
+                }
+                else
+                {
+                    return BadRequest("Password is not matched !");
+                }
+            }
+            else
+            {
+                return BadRequest("Old password is not correct !");
+            }
+        }
     }
 }

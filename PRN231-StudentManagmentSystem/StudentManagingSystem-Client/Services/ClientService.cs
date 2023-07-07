@@ -151,6 +151,19 @@ namespace StudentManagingSystem_Client.Services
             }
         }
 
+        public async Task<HttpResponseMessage> PostReturnResponse(string relativeUrl, object? data)
+        {
+            try
+            {
+                var res = await _client.PostAsync(relativeUrl, GetBody(data));
+                return res;
+            }
+            catch
+            {
+                return default;
+            }
+        }
+
         public async Task<string?> Put(string relativeUrl, object? data)
         {
             try

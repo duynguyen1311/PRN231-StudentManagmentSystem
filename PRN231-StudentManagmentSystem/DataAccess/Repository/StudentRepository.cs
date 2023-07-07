@@ -4,6 +4,7 @@ using BusinessObject.Model;
 using BusinessObject.Model.Interface;
 using DataAccess.Repository.IRepository;
 using BusinessObject.Utility;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataAccess.Repository
 {
@@ -11,11 +12,13 @@ namespace DataAccess.Repository
     {
         private readonly ISmsDbContext _context;
         private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
 
-        public StudentRepository(ISmsDbContext context, IMapper mapper)
+        public StudentRepository(ISmsDbContext context, IMapper mapper, UserManager<AppUser> userManager)
         {
             _context = context;
             _mapper = mapper;
+            _userManager = userManager;
         }
         public async Task Add(Student student, CancellationToken cancellationToken = default)
         {
@@ -77,6 +80,52 @@ namespace DataAccess.Repository
             var student = await _context.Students.FirstOrDefaultAsync(i => i.Id == id);
             if (student == null) throw new ArgumentException("Can not find !!!");
             return student;
+        }
+
+        public async Task Import(List<Student> listDept, CancellationToken cancellationToken = default)
+        {
+            foreach (var item in listDept)
+            {
+                var dept = await _context.Students.FirstOrDefaultAsync(i => i.StudentCode == item.StudentCode);
+                if (dept == null)
+                {
+                    var newDept = new Student()
+                    {
+                        Id = Guid.NewGuid(),
+                        StudentCode = item.StudentCode,
+                        StudentName = item.StudentName,
+                        Email = item.Email,
+                        Address = item.Address,
+                        Phone = item.Phone,
+                        DOB = item.DOB,
+                        Gender = item.Gender,
+                        InSemester = item.InSemester,
+                        Status = true,
+                        CreatedDate = DateTime.Now,
+                    };
+                    await _context.Students.AddAsync(newDept);
+                    await _context.SaveChangesAsync(cancellationToken);
+
+                    var user = new AppUser()
+                    {
+                        Id = newDept.Id.ToString(),
+                        FullName = newDept.StudentName,
+                        Login = newDept.Email,
+                        Email = newDept.Email,
+                        Adress = newDept.Address,
+                        PhoneNumber = newDept.Phone,
+                        DOB = item.DOB,
+                        Gender = item.Gender,
+                        UserName = newDept.Email,
+                        Activated = true,
+                        Type = 0,
+                        CreatedDate = DateTime.Now,
+                    };
+                    var result = await _userManager.CreateAsync(user, "Abc@123");
+                    if(result.Succeeded) await _userManager.AddToRoleAsync(user, RoleConstant.STUDENT);
+                }
+
+            }
         }
 
         public async Task Update(Student student, CancellationToken cancellationToken = default)

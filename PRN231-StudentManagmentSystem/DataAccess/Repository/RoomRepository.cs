@@ -115,5 +115,27 @@ namespace DataAccess.Repository
                 await _context.SaveChangesAsync(cancellationToken);
             }
         }
+
+        public async Task Import(List<ClassRoom> listDept, CancellationToken cancellationToken = default)
+        {
+            foreach (var item in listDept)
+            {
+                var dept = await _context.ClassRooms.FirstOrDefaultAsync(i => i.ClassCode == item.ClassCode);
+                if (dept == null)
+                {
+                    var newDept = new ClassRoom()
+                    {
+                        Id = Guid.NewGuid(),
+                        ClassCode = item.ClassCode,
+                        ClassName = item.ClassName,
+                        Status = true,
+                        CreatedDate = DateTime.Now,
+                    };
+                    await _context.ClassRooms.AddAsync(newDept);
+                    await _context.SaveChangesAsync(cancellationToken);
+                }
+
+            }
+        }
     }
 }

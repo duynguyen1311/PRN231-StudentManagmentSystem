@@ -27,8 +27,6 @@ namespace StudentManagingSystem_Client.ViewModel
     public class ChangePasswordRequest
     {
         [Required]
-        public string Id { get; set; }
-        [Required]
         public string OldPassword { get; set; }
         [Required]
         public string NewPassword { get; set; }

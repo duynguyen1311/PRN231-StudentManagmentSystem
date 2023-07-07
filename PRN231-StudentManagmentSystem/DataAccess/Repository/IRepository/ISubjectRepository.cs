@@ -12,5 +12,6 @@ namespace DataAccess.Repository.IRepository
         Task<List<Subject>> GetAll();
         Task<PagedList<Subject>> Search(string? keyword, bool? status,int? semester, int page, int pagesize);
         Task<PagedList<Subject>> SearchByStudent(string? keyword, bool? status,Guid? stuId, int? semester, int page, int pagesize);
+        Task Import(List<Subject> listDept, CancellationToken cancellationToken = default);
     }
 }

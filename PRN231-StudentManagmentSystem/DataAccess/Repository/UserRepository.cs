@@ -67,5 +67,34 @@ namespace DataAccess.Repository
                 TotalCount = res.Count
             };
         }
+
+        public async Task Import(List<AppUser> listDept, CancellationToken cancellationToken = default)
+        {
+            foreach (var item in listDept)
+            {
+                var dept = await _context.AppUsers.FirstOrDefaultAsync(i => i.Email == item.Email);
+                if (dept == null)
+                {
+                    var user = new AppUser()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        FullName = item.FullName,
+                        Login = item.Email,
+                        Email = item.Email,
+                        UserName = item.Email,
+                        Adress = item.Adress,
+                        PhoneNumber = item.PhoneNumber,
+                        DOB = item.DOB,
+                        Gender = item.Gender,
+                        Activated = true,
+                        Type = 1,
+                        CreatedDate = DateTime.Now,
+                    };
+                    var result = await _userManager.CreateAsync(user, "Abc@123");
+                    if (result.Succeeded) await _userManager.AddToRoleAsync(user, RoleConstant.TEACHER);
+                }
+
+            }
+        }
     }
 }

@@ -13,6 +13,6 @@ namespace DataAccess.Repository.IRepository
         Task<PagedList<ClassRoom>> Search(string? keyword, bool? status,string? tid, int page, int pagesize);
         Task<PagedList<ClassRoom>> SearchClassByStudent(string? keyword, bool? status,Guid? sid, int page, int pagesize);
         Task<List<Student>> ListStudentByClass(Guid sid);
-        
+        Task Import(List<ClassRoom> listDept, CancellationToken cancellationToken = default);
     }
 }

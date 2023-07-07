@@ -179,6 +179,21 @@ namespace StudentManagingSystem_API.Controllers
         }
 
         [Authorize]
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportFile([FromBody] List<ClassRoom> rq)
+        {
+            try
+            {
+                await _repository.Import(rq);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
         [HttpPost("Export")]
         public async Task<IActionResult> ExportFile(ClassRoomSearchRequest rq)
         {

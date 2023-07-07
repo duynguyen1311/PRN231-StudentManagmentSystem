@@ -10,6 +10,7 @@
   
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="6.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.19" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

@@ -12,5 +12,6 @@ namespace DataAccess.Repository.IRepository
         Task<Student> GetById(Guid id);
         Task<PagedList<Student>> GetAll(string? keyword, bool? status, int page, int pagesize);
         Task<List<Student>> GetAllWithoutFilter();
+        Task Import(List<Student> listDept, CancellationToken cancellationToken = default);
     }
 }

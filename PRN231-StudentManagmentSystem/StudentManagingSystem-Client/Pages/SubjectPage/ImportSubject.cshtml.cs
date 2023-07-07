@@ -1,15 +1,16 @@
-﻿using BusinessObject.Model;
+using BusinessObject.Model;
 using BusinessObject.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using StudentManagingSystem_Client.Services;
+using StudentManagingSystem_Client.ViewModel;
 
-namespace StudentManagingSystem_Client.Pages.DepartmentPage
+namespace StudentManagingSystem_Client.Pages.SubjectPage
 {
     [Authorize(Roles = RoleConstant.ADMIN)]
-    public class ImportDepartmentModel : PageModel
+    public class ImportSubjectModel : PageModel
     {
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
@@ -20,7 +21,7 @@ namespace StudentManagingSystem_Client.Pages.DepartmentPage
             }
 
             // Step 3: Parse the Excel file and create a list of objects
-            var listDepartment = new List<Department>();
+            var listSubject = new List<SubjectAddRequest>();
 
             using (var stream = new MemoryStream())
             {
@@ -33,21 +34,24 @@ namespace StudentManagingSystem_Client.Pages.DepartmentPage
 
                     for (int row = 2; row <= rowCount; row++) // Assuming the first row contains headers
                     {
-                        var obj = new Department
+                        var obj = new SubjectAddRequest()
                         {
-                            DepartmentCode = worksheet.Cells[row, 1].Value?.ToString(),
-                            DepartmentName = worksheet.Cells[row, 2].Value?.ToString(),
+                            SubjectCode = worksheet.Cells[row, 1].Value?.ToString(),
+                            SubjectName = worksheet.Cells[row, 2].Value?.ToString(),
+                            Description = worksheet.Cells[row, 3].Value?.ToString(),
+                            Semester = int.Parse(worksheet.Cells[row, 4].Value?.ToString()),
+                            Credit = int.Parse(worksheet.Cells[row, 5].Value?.ToString()),
                         };
 
-                        listDepartment.Add(obj);
+                        listSubject.Add(obj);
                     }
                 }
             }
 
             var client = new ClientService(HttpContext);
 
-            var res = await client.PostAdd("api/Department/Import", listDepartment);
-            return RedirectToPage("Department");
+            var res = await client.PostAdd("api/Subject/Import", listSubject);
+            return RedirectToPage("Subject");
         }
     }
 }
