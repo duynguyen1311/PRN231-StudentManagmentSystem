@@ -1,4 +1,4 @@
-/*using AutoMapper;
+using AutoMapper;
 using BusinessObject.Model;
 using BusinessObject.Utility;
 using DataAccess.Repository.IRepository;
@@ -6,62 +6,34 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using StudentManagingSystem_Client.Services;
+using StudentManagingSystem_Client.ViewModel;
 
 namespace StudentManagingSystem_Client.Pages
 {
     [Authorize]
     public class UserProfileModel : PageModel
     {
-        private readonly IStudentRepository _studentRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IMapper _mapper;
-
+        
         [BindProperty]
-        public UserProfileViewModel Profile { get; set; }
+        public UserProfileResponse Profile { get; set; }
 
         [BindProperty]
         public ChangePasswordRequest Request { get; set; }
-        public UserProfileModel(IStudentRepository studentRepository, IUserRepository userRepository, UserManager<AppUser> userManager, IMapper mapper)
-        {
-            _studentRepository = studentRepository;
-            _userRepository = userRepository;
-            _userManager = userManager;
-            _mapper = mapper;
-        }
+        
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            var role = await _userManager.GetRolesAsync(user);
-            if ((role.Contains(RoleConstant.ADMIN)) || (role.Contains(RoleConstant.TEACHER)))
-            {
-                Profile = _mapper.Map<UserProfileViewModel>(user);
-                return Page();
-            }
-            var student = await _studentRepository.GetById(Guid.Parse(id));
-            Profile = _mapper.Map<UserProfileViewModel>(user);
-            Profile.StudentCode = student.StudentCode;
+            var client = new ClientService(HttpContext);
+            Profile = await client.GetDetail<UserProfileResponse>("/api/User/profile", $"?id={id}");
             return Page();
         }
         public async Task<IActionResult> OnPostAsync()
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(Profile.Id);
-                var role = await _userManager.GetRolesAsync(user);
-                if ((role.Contains(RoleConstant.ADMIN)) || (role.Contains(RoleConstant.TEACHER)))
-                {
-                    _mapper.Map(Profile, user);
-                    await _userManager.UpdateAsync(user);
-                    return Page();
-                }
-                var student = await _studentRepository.GetById(Guid.Parse(Profile.Id));
-                Profile.StudentCode = student.StudentCode;
-                _mapper.Map(Profile, user);
-                _mapper.Map(Profile, student);
-                await _userManager.UpdateAsync(user);
-                await _studentRepository.Update(student);
+                var client = new ClientService(HttpContext);
+                var res = await client.Put("/api/User/updateProfile", Profile);
                 return Page();
             }
             catch (Exception ex)
@@ -70,7 +42,7 @@ namespace StudentManagingSystem_Client.Pages
                 return RedirectToPage("Error");
             }
         }
-        public async Task<IActionResult> OnPostChangePassword()
+        /*public async Task<IActionResult> OnPostChangePassword()
         {
             try
             {
@@ -108,8 +80,7 @@ namespace StudentManagingSystem_Client.Pages
                 TempData["ErrorMessage"] = ex.Message;
                 return RedirectToPage("Error");
             }
-        }
+        }*/
 
     }
 }
-*/

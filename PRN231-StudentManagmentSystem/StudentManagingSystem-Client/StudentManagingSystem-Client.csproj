@@ -9,6 +9,7 @@
 
   
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="6.2.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

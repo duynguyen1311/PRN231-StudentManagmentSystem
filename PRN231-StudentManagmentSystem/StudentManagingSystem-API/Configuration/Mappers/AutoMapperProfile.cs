@@ -40,6 +40,10 @@ namespace StudentManagingSystem_API.Configuration.Mappers
             CreateMap<Notification, Notification>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
             CreateMap<Notification, NotifyAddRequest>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
             CreateMap<Notification, NotifyUpdateRequest>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
+            
+            //User
+            CreateMap<UserProfileRequest, AppUser>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
+            
             #endregion
 
             #region Response
@@ -52,6 +56,7 @@ namespace StudentManagingSystem_API.Configuration.Mappers
             //Teacher
             CreateMap(typeof(PagedList<AppUser>), typeof(PagedList<TeacherResponse>)).ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null)); ;
             CreateMap<AppUser, TeacherResponse>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
+            CreateMap<AppUser, UserProfileResponse>().ReverseMap().ForAllMembers(x => x.Condition((source, target, sourceValue) => sourceValue != null));
             CreateMap<AppUser, TeacherResponse>()
                 .ForMember(destination => destination.Status, options => options.MapFrom(source => source.Activated));
             //Point

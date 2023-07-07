@@ -35,6 +35,12 @@ namespace StudentManagingSystem_API.DTO
         [JsonIgnore]
         public DateTime? LastModifiedDate { get; set; }
     }
+
+    public class ImportDepartmentRequest
+    {
+        public List<Department> listDepartment { get; set; }
+    }
+
     #endregion
 
     #region Notify
@@ -305,5 +311,27 @@ namespace StudentManagingSystem_API.DTO
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
+    #endregion
+
+    #region User
+    public class ForgotPasswordRequest
+    {
+        public string Email { get; set; }
+        public string NewPassword { get; set; }
+        public string ConfirmPassword { get; set; }
+    }
+
+    public class UserProfileRequest
+    {
+        public string Id { get; set; }
+        public string FullName { get; set; }
+        public string? Adress { get; set; }
+        public string? Email { get; set; }
+        public string? Gender { get; set; }
+        public DateTime? DOB { get; set; }
+        public string? Phone { get; set; }
+    }
+    
+
     #endregion
 }

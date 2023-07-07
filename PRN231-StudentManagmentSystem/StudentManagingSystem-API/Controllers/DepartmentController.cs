@@ -73,6 +73,22 @@ namespace StudentManagingSystem_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpPost("deleteList")]
+        public async Task<IActionResult> DeleteList([FromQuery] List<string> Id)
+        {
+            try
+            {
+                await _repository.DeleteList(Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [AllowAnonymous]
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll()
@@ -117,6 +133,19 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost("Import")]
+        public async Task<IActionResult> ImportFile([FromBody] List<Department> rq)
+        {
+            try
+            {
+                await _repository.Import(rq);
+                return Ok();
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [Authorize]
         [HttpPost("Export")]
         public async Task<IActionResult> ExportFile(DepartmentSearchRequest rq)

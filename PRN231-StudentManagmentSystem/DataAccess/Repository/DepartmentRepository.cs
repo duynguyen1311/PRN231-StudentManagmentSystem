@@ -28,12 +28,20 @@ namespace DataAccess.Repository
             var department = await _context.Departments.FirstOrDefaultAsync(i => i.Id == id);
             if (department == null) throw new ArgumentException("Can not find !!!");
             var c = await _context.ClassRooms.Where(i => i.DepartmentId == id).ToListAsync();
-            foreach(var item in c)
+            foreach (var item in c)
             {
                 item.DepartmentId = null;
             }
             _context.Departments.Remove(department);
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteList(List<string> id, CancellationToken cancellationToken = default)
+        {
+
+            var dept = await _context.Departments.Where(i => id.Contains(i.Id.ToString())).ToListAsync();
+            _context.Departments.RemoveRange(dept);
+
         }
 
         public async Task<List<Department>> GetAll()
@@ -47,6 +55,28 @@ namespace DataAccess.Repository
             var department = await _context.Departments.FirstOrDefaultAsync(i => i.Id == id);
             if (department == null) throw new ArgumentException("Can not find !!!");
             return department;
+        }
+
+        public async Task Import(List<Department> listDept, CancellationToken cancellationToken = default)
+        {
+            foreach (var item in listDept)
+            {
+                var dept = await _context.Departments.FirstOrDefaultAsync(i => i.DepartmentCode == item.DepartmentCode);
+                if (dept == null)
+                {
+                    var newDept = new Department()
+                    {
+                        Id = Guid.NewGuid(),
+                        DepartmentCode = item.DepartmentCode,
+                        DepartmentName = item.DepartmentName,
+                        Status = true,
+                        CreatedDate = DateTime.Now,
+                    };
+                    await _context.Departments.AddAsync(newDept);
+                    await _context.SaveChangesAsync(cancellationToken);
+                }
+
+            }
         }
 
         public async Task<PagedList<Department>> Search(string? keyword, bool? status, int page, int pagesize)

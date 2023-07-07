@@ -32,8 +32,10 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                 var client = new ClientService(HttpContext);
                 var userid = HttpContext.User.FindFirstValue(ClaimTypes.Sid);
                 var role = HttpContext.User.FindFirstValue(ClaimTypes.Role);
+                ListSubject = await client.GetAll<List<Subject>>("api/Subject/getall");
                 if (role.Contains(RoleConstant.STUDENT))
                 {
+                    ListStudent = new List<Student>();
                     Semester = semester;
                     Keyword = keyword;
                     if (pageIndex == 0) pageIndex = 1;
@@ -58,7 +60,6 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                 else
                 {
                     ListStudent = await client.GetAll<List<Student>>("/api/Student/getAllWithoutFilter");
-                    ListSubject = await client.GetAll<List<Subject>>("api/Subject/getall");
                     Keyword = keyword;
                     if (pageIndex == 0) pageIndex = 1;
                     PageIndex = pageIndex;

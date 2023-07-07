@@ -31,4 +31,8 @@ namespace StudentManagingSystem_Client.ViewModel
         [JsonIgnore]
         public DateTime? LastModifiedDate { get; set; }
     }
+    public class DepartmentDeleteListRequest
+    {
+        public List<string> Id { get; set; }
+    }
 }
