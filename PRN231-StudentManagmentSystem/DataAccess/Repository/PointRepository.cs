@@ -104,11 +104,20 @@ namespace DataAccess.Repository
                 }
                 query = query.Where(i => i.Subject.Id == subId);
             }
+
+            if (stuId != null)
+            {
+                if (stuId == Guid.Empty)
+                {
+                    query = query.Where(i => i.Student.Id == null);
+                }
+                query = query.Where(i => i.Student.Id == stuId);
+            }
             if (semester != null)
             {
                 query = query.Where(i => i.Subject.Semester == semester);
             }
-            var query1 = query.Where(i => i.Student.Id == stuId).Include(i => i.Subject).Include(i => i.Student).OrderByDescending(c => c.CreatedDate);
+            var query1 = query.Include(i => i.Subject).Include(i => i.Student).OrderByDescending(c => c.CreatedDate);
             var query2 = await query1.Skip((page - 1) * pagesize)
                 .Take(pagesize).ToListAsync();
             var res = await query1.AsNoTracking().ToListAsync();

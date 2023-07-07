@@ -1,4 +1,5 @@
 ﻿@page
+@using BusinessObject.Utility;
 @model StudentManagingSystem_Client.Pages.PointPage.UpdatePointModel
 @{
 }
@@ -40,24 +41,6 @@
                                 <input asp-for="Point.Id" class="form-control" type="hidden">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label>@Html.LabelFor(c=>c.Point.SubjectId)</label>
-                            <select asp-for="Point.SubjectId" class="custom-select2 form-control disable" style="width: 100%; height: 38px;">
-                                @foreach (var item in Model.ListSubject)
-                                {
-                                    <option value="@item.Id">@item.SubjectName</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>@Html.LabelFor(c=>c.Point.StudentId)</label>
-                            <select asp-for="Point.StudentId" class="custom-select2 form-control disable" style="width: 100%; height: 38px;">
-                                @foreach (var item in Model.ListStudent)
-                                {
-                                    <option value="@item.Id">@item.StudentName</option>
-                                }
-                            </select>
-                        </div>
                         <div class="form-group row">
                             <label asp-for="Point.ProgessPoint" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
                             <div class="col-sm-12 col-md-10">
@@ -68,12 +51,6 @@
                             <label asp-for="Point.MidtermPoint" class="col-sm-12 col-md-2 col-form-label">Midterm Point</label>
                             <div class="col-sm-12 col-md-10">
                                 <input asp-for="Point.MidtermPoint" class="form-control" type="number" placeholder="Midterm">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label asp-for="Point.FinalPoint" class="col-sm-12 col-md-2 col-form-label">Final Point</label>
-                            <div class="col-sm-12 col-md-10">
-                                <input asp-for="Point.FinalPoint" class="form-control" type="number" placeholder="Final">
                             </div>
                         </div>
                         <div class="btn-list">
@@ -112,19 +89,19 @@
                             </select>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="Point.ProgessPoint" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
+                            <label asp-for="Point.ProgessPoint" class="col-sm-12 col-md-2 col-form-label">Progress Point - 50%</label>
                             <div class="col-sm-12 col-md-10">
                                 <input asp-for="Point.ProgessPoint" class="form-control" type="number" placeholder="Progress" readonly="readonly">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="Point.MidtermPoint" class="col-sm-12 col-md-2 col-form-label">Midterm Point</label>
+                            <label asp-for="Point.MidtermPoint" class="col-sm-12 col-md-2 col-form-label">Midterm Point - 50%</label>
                             <div class="col-sm-12 col-md-10">
                                 <input asp-for="Point.MidtermPoint" class="form-control" type="number" placeholder="Midterm" readonly="readonly">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label asp-for="Point.FinalPoint" class="col-sm-12 col-md-2 col-form-label">Final Point</label>
+                            <label asp-for="Point.FinalPoint" class="col-sm-12 col-md-2 col-form-label">Total Point</label>
                             <div class="col-sm-12 col-md-10">
                                 <input asp-for="Point.FinalPoint" class="form-control" type="number" placeholder="Final" readonly="readonly">
                             </div>

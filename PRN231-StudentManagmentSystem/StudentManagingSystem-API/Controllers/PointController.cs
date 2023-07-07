@@ -90,10 +90,20 @@ namespace StudentManagingSystem_API.Controllers
         {
             try
             {
-                rq.studentId = Guid.Parse(GetUserIdFromConext());
-                var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.page, rq.pagesize);
-                var map = _mapper.Map<PagedList<PointResponse>>(res);
-                return Ok(map);
+                if (User.IsInRole(RoleConstant.STUDENT))
+                {
+                    rq.studentId = Guid.Parse(GetUserIdFromConext());
+                    var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.page, rq.pagesize);
+                    var map = _mapper.Map<PagedList<PointResponse>>(res);
+                    return Ok(map);
+                }
+                else
+                {
+                    var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.page, rq.pagesize);
+                    var map = _mapper.Map<PagedList<PointResponse>>(res);
+                    return Ok(map);
+                }
+                
             }
             catch (Exception ex)
             {

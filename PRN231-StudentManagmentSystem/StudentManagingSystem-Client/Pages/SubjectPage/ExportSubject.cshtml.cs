@@ -32,7 +32,7 @@ namespace StudentManagingSystem_Client.Pages.SubjectPage
                 Semester = semester;
                 if (pageIndex == 0) pageIndex = 1;
                 PageIndex = pageIndex;
-                pagesize = 4;
+                pagesize = 1000;
 
                 var requestModel = new SubjectSearchByStudentRequest
                 {
@@ -74,7 +74,7 @@ namespace StudentManagingSystem_Client.Pages.SubjectPage
                 Semester = semester;
                 if (pageIndex == 0) pageIndex = 1;
                 PageIndex = pageIndex;
-                pagesize = 4;
+                pagesize = 1000;
 
                 var requestModel = new SubjectSearchRequest
                 {
