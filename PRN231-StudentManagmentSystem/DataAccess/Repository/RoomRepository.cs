@@ -41,6 +41,24 @@ namespace DataAccess.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task DeleteList(List<string> id, CancellationToken cancellationToken = default)
+        {
+            foreach(var item in id)
+            {
+                var c = await _context.ClassRooms.Where(i => id.Contains(i.Id.ToString())).ToListAsync();
+                var s = await _context.Students.Where(i => i.ClassRoomId == Guid.Parse(item)).ToListAsync();
+                if (s.Count > 0)
+                {
+                    foreach (var item1 in s)
+                    {
+                        item1.ClassRoomId = null;
+                    }
+                }
+                _context.ClassRooms.RemoveRange(c);
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<List<ClassRoom>> GetAll()
         {
             var list = await _context.ClassRooms.Where(i => i.Status == true).OrderByDescending(i => i.CreatedDate).ToListAsync();
@@ -137,5 +155,7 @@ namespace DataAccess.Repository
 
             }
         }
+
+        
     }
 }

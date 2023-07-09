@@ -3,6 +3,10 @@
 @model StudentManagingSystem_Client.Pages.TeacherPage.TeacherModel
 @{
 }
+@{
+    var t = HttpContext.Request.Cookies["AccessToken"];
+}
+<input type="hidden" id="token" value="@t" />
 <div class="mobile-menu-overlay"></div>
 
 <div class="main-container">
@@ -33,7 +37,7 @@
                             </div>
                             <div class="col-md-2 col-sm-12 text-right">
                                 <div class="dropdown">
-                                    <a id="deleteButton" class="btn btn-danger disabled" asp-page="DeleteTeacher">
+                                    <a id="deleteButton" class="btn btn-danger disabled">
                                         Delete
                                     </a>
                                 </div>
@@ -107,6 +111,7 @@
                 <table class="table table-striped table-bordered ">
                     <thead style="background-color: lightgray">
                         <tr>
+                            <th>#</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Address</th>
@@ -121,6 +126,9 @@
                         @foreach (var item in Model.ListTeacher.Data)
                         {
                             <tr>
+                                <td>
+                                    <input type="checkbox" name="selectedItems" value="@item.Id">
+                                </td>
                                 <td class="table-plus">@item.FullName</td>
                                 <td>@item.Email</td>
                                 <td>@item.Adress</td>
@@ -217,3 +225,43 @@
         checkbox.addEventListener('change', handleCheckboxChange);
     });
 </script>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#deleteButton').click(function () {
+                // Get the selected checkbox values
+                var selectedIds = [];
+                $("input:checkbox:checked").map(function () {
+                    selectedIds.push($(this).val());
+                });
+
+                // Make the AJAX request
+
+                if (selectedIds.length > 0) {
+                    var url = "https://localhost:7016/api/Teacher/deleteList";
+                    var token = document.getElementById("token").value;
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: JSON.stringify(selectedIds),
+                        contentType: "application/json",
+                        headers: {
+                            "Authorization": "Bearer" + " " + token
+                        },
+                        success: function (response) {
+                            // Handle success response
+                            location.reload(true);
+                            console.log(response);
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            console.error(error);
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+}

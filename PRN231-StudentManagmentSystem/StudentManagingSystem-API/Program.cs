@@ -68,7 +68,10 @@ builder.Services.AddSwaggerGen(options =>
         { securityScheme, new[] { "Bearer" } }
     });
 });
-
+builder.Services.AddCors(policy =>
+{
+    policy.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,7 +84,7 @@ if (app.Environment.IsDevelopment())
 IServiceProvider serviceProvider = builder.Services.BuildServiceProvider();
 app.UseApplicationDatabase<SmsDbContext>(serviceProvider);
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 

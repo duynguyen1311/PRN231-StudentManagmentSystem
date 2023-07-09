@@ -76,7 +76,7 @@ namespace StudentManagingSystem_API.Controllers
 
         [Authorize]
         [HttpPost("deleteList")]
-        public async Task<IActionResult> DeleteList([FromQuery] List<string> Id)
+        public async Task<IActionResult> DeleteList(List<string> Id)
         {
             try
             {

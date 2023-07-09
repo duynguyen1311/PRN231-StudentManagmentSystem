@@ -115,7 +115,29 @@ namespace StudentManagingSystem_API.Controllers
             {
                 await _repository.Delete(Id);
                 var user = await _userManager.FindByIdAsync(Id.ToString());
-                await _userManager.DeleteAsync(user);
+                user.Activated = false;
+                await _userManager.UpdateAsync(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("deleteList")]
+        public async Task<IActionResult> DeleteList(List<string> Id)
+        {
+            try
+            {
+                await _repository.DeleteList(Id);
+                foreach(var item in Id)
+                {
+                    var user = await _userManager.FindByIdAsync(item);
+                    user.Activated = false;
+                    await _userManager.UpdateAsync(user);
+                }   
                 return Ok();
             }
             catch (Exception ex)

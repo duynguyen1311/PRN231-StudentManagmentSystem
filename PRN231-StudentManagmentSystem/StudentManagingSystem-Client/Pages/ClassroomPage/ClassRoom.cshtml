@@ -33,7 +33,7 @@
                             </div>
                             <div class="col-md-2 col-sm-12 text-right">
                                 <div class="dropdown">
-                                    <a id="deleteButton" class="btn btn-danger disabled" asp-page="DeleteClass">
+                                    <a id="deleteButton" class="btn btn-danger disabled">
                                         Delete
                                     </a>
                                 </div>
@@ -107,6 +107,7 @@
                 <table class="table table-striped table-bordered ">
                     <thead style="background-color: lightgray">
                         <tr>
+                            <th>#</th>
                             <th>Class Name</th>
                             <th>Class Code</th>
                             <th>Department</th>
@@ -121,6 +122,9 @@
                         @foreach (var item in Model.ListClassRoom.Data)
                         {
                             <tr>
+                                <td>
+                                    <input type="checkbox" name="selectedItems" value="@item.Id">
+                                </td>
                                 <td class="table-plus">@item.ClassName</td>
                                 <td>@item.ClassCode</td>
                                 <td>@item.DepartmentName</td>
@@ -172,6 +176,10 @@
         </div>
     </div>
 </div>
+@{
+    var t = HttpContext.Request.Cookies["AccessToken"];
+}
+<input type="hidden" id="token" value="@t" />
 <script>
     function confirmDelete(event) {
         event.preventDefault(); // prevent the default action of the button click
@@ -226,3 +234,55 @@
         checkbox.addEventListener('change', handleCheckboxChange);
     });
 </script>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#deleteButton').click(function () {
+                // Get the selected checkbox values
+                var selectedIds = [];
+                $("input:checkbox:checked").map(function () {
+                    selectedIds.push($(this).val());
+                });
+
+                // Make the AJAX request
+                /*$.ajax({
+                    url: '/DepartmentPage/DeleteListDepartment',
+                    type: 'Get',
+                    data: { selectedItems: selectedIds },
+                    success: function (response) {
+                        // Handle the success response from the controller
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle any error that occurred during the AJAX request
+                        console.error(error);
+                    }
+                });*/
+
+                if (selectedIds.length > 0) {
+                    var url = "https://localhost:7016/api/ClassRoom/deleteList";
+                    var token = document.getElementById("token").value;
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: JSON.stringify(selectedIds),
+                        contentType: "application/json",
+                        headers: {
+                            "Authorization": "Bearer" + " " + token
+                        },
+                        success: function (response) {
+                            // Handle success response
+                            location.reload(true);
+                            console.log(response);
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            console.error(error);
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+}

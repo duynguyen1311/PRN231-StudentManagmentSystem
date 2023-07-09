@@ -1,6 +1,9 @@
+using BusinessObject.Model;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using StudentManagingSystem_Client.Services;
 using StudentManagingSystem_Client.ViewModel;
 using System.Security.Claims;
@@ -9,12 +12,13 @@ namespace StudentManagingSystem_Client.Pages
 {
     public class LoginModel : PageModel
     {
-
         [BindProperty]
         public string Email { get; set; } = null!;
 
         [BindProperty]
         public string Password { get; set; } = null!;
+
+
         public IActionResult OnGet()
         {
             if (User.Identity?.IsAuthenticated == true) return RedirectToPage("/Index");
@@ -27,12 +31,20 @@ namespace StudentManagingSystem_Client.Pages
 
             var client = new ClientService(HttpContext);
             var requestModel = new LoginRequestModel { Email = Email, Password = Password };
-            var res = await client.Post<LoginResponseModel>("api/UserJwt/login", requestModel);
-            if (res == null)
+            var result = await client.PostReturnResponse("api/UserJwt/login", requestModel);
+            
+            if (result.Content.ReadAsStringAsync().Result.Equals("Not activated"))
+            {
+                ViewData["Title"] = "Account is locked";
+                return Page();
+            }
+            if (!result.IsSuccessStatusCode)
             {
                 ViewData["Title"] = "Wrong Email or Password!";
-                return RedirectToPage("/Login", new { Error = "Login Failed!" });
+                return Page();
             }
+            var content = await result.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<LoginResponseModel>(content);
             HttpContext.Response.Cookies.Append("AccessToken", res.Token, new CookieOptions
             {
                 Expires = DateTime.Now.AddDays(1).AddMinutes(-1)

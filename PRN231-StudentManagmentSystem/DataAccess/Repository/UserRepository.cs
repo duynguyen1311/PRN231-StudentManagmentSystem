@@ -45,6 +45,37 @@ namespace DataAccess.Repository
             return User;
         }
 
+        public async Task Delete(string id, CancellationToken cancellationToken = default)
+        {
+            var User = await _userManager.FindByIdAsync(id);
+            if (User == null) throw new ArgumentException("Can not find !!!");
+            User.Activated = false;
+            await _userManager.UpdateAsync(User);
+
+            var c = await _context.ClassRooms.Where(i => i.UserId == id).ToListAsync();
+            foreach (var item in c)
+            {
+                item.UserId = null;
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteList(List<string> id, CancellationToken cancellationToken = default)
+        {
+            foreach(var item in id)
+            {
+                var User = await _userManager.FindByIdAsync(item);
+                User.Activated = false;
+                await _userManager.UpdateAsync(User);
+            }
+            var c = await _context.ClassRooms.Where(i => id.Contains(id.ToString())).ToListAsync();
+            foreach (var item in c)
+            {
+                item.UserId = null;
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<PagedList<AppUser>> Search(string? keyword, bool? status, int page, int pagesize)
         {
             var query = _context.AppUsers.Where(i => i.Type == 1).AsQueryable();
@@ -96,5 +127,7 @@ namespace DataAccess.Repository
 
             }
         }
+
+        
     }
 }

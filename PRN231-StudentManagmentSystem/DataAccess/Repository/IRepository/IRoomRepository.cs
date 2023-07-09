@@ -8,6 +8,7 @@ namespace DataAccess.Repository.IRepository
         Task Add(ClassRoom classRoom, CancellationToken cancellationToken = default);
         Task Update(ClassRoom classRoom, CancellationToken cancellationToken = default);
         Task Delete(Guid id, CancellationToken cancellationToken = default);
+        Task DeleteList(List<string> id, CancellationToken cancellationToken = default);
         Task<ClassRoom> GetById(Guid id);
         Task<List<ClassRoom>> GetAll();
         Task<PagedList<ClassRoom>> Search(string? keyword, bool? status,string? tid, int page, int pagesize);

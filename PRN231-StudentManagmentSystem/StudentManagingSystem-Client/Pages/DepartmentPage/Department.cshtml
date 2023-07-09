@@ -4,117 +4,6 @@
 @{
 }
 
-<style>
-    .checkbox-wrapper-26 * {
-        -webkit-tap-highlight-color: transparent;
-        outline: none;
-    }
-
-    .checkbox-wrapper-26 input[type="checkbox"] {
-        display: none;
-    }
-
-    .checkbox-wrapper-26 label {
-        --size: 50px;
-        --shadow: calc(var(--size) * .07) calc(var(--size) * .1);
-        position: relative;
-        display: block;
-        width: var(--size);
-        height: var(--size);
-        margin: 0 auto;
-        background-color: #f72414;
-        border-radius: 50%;
-        box-shadow: 0 var(--shadow) #ffbeb8;
-        cursor: pointer;
-        transition: 0.2s ease transform, 0.2s ease background-color, 0.2s ease box-shadow;
-        overflow: hidden;
-        z-index: 1;
-    }
-
-        .checkbox-wrapper-26 label:before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            right: 0;
-            left: 0;
-            width: calc(var(--size) * .7);
-            height: calc(var(--size) * .7);
-            margin: 0 auto;
-            background-color: #fff;
-            transform: translateY(-50%);
-            border-radius: 50%;
-            box-shadow: inset 0 var(--shadow) #ffbeb8;
-            transition: 0.2s ease width, 0.2s ease height;
-        }
-
-        .checkbox-wrapper-26 label:hover:before {
-            width: calc(var(--size) * .55);
-            height: calc(var(--size) * .55);
-            box-shadow: inset 0 var(--shadow) #ff9d96;
-        }
-
-        .checkbox-wrapper-26 label:active {
-            transform: scale(0.9);
-        }
-
-    .checkbox-wrapper-26 .tick_mark {
-        position: absolute;
-        top: -1px;
-        right: 0;
-        left: calc(var(--size) * -.05);
-        width: calc(var(--size) * .6);
-        height: calc(var(--size) * .6);
-        margin: 0 auto;
-        margin-left: calc(var(--size) * .14);
-        transform: rotateZ(-40deg);
-    }
-
-        .checkbox-wrapper-26 .tick_mark:before,
-        .checkbox-wrapper-26 .tick_mark:after {
-            content: "";
-            position: absolute;
-            background-color: #fff;
-            border-radius: 2px;
-            opacity: 0;
-            transition: 0.2s ease transform, 0.2s ease opacity;
-        }
-
-        .checkbox-wrapper-26 .tick_mark:before {
-            left: 0;
-            bottom: 0;
-            width: calc(var(--size) * .1);
-            height: calc(var(--size) * .3);
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.23);
-            transform: translateY(calc(var(--size) * -.68));
-        }
-
-        .checkbox-wrapper-26 .tick_mark:after {
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: calc(var(--size) * .1);
-            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.23);
-            transform: translateX(calc(var(--size) * .78));
-        }
-
-    .checkbox-wrapper-26 input[type="checkbox"]:checked + label {
-        background-color: #07d410;
-        box-shadow: 0 var(--shadow) #92ff97;
-    }
-
-        .checkbox-wrapper-26 input[type="checkbox"]:checked + label:before {
-            width: 0;
-            height: 0;
-        }
-
-        .checkbox-wrapper-26 input[type="checkbox"]:checked + label .tick_mark:before,
-        .checkbox-wrapper-26 input[type="checkbox"]:checked + label .tick_mark:after {
-            transform: translate(0);
-            opacity: 1;
-        }
-</style>
-
-
 <div class="mobile-menu-overlay"></div>
 
 <div class="main-container">
@@ -145,7 +34,7 @@
                             </div>
                             <div class="col-md-2 col-sm-12 text-right">
                                 <div class="dropdown">
-                                    <a id="deleteButton" class="btn btn-danger disabled" asp-page="DeleteDepartment">
+                                    <a id="deleteButton" class="btn btn-danger disabled">
                                         Delete
                                     </a>
                                 </div>
@@ -170,8 +59,8 @@
                             </div>
                         </div>
                     }
-                    
-                    
+
+
                 </div>
             </div>
             <form method="get">
@@ -235,7 +124,7 @@
                         {
                             <tr>
                                 <td>
-                                    <input type="checkbox" id="_checkbox-26" name="selectedItems" value="@item.Id">
+                                    <input type="checkbox" name="selectedItems" value="@item.Id">
                                 </td>
                                 <td class="table-plus">@item.DepartmentName</td>
                                 <td>@item.DepartmentCode</td>
@@ -285,6 +174,10 @@
         </div>
     </div>
 </div>
+@{
+    var t = HttpContext.Request.Cookies["AccessToken"];
+}
+<input type="hidden" id="token" value="@t" />
 <script>
     function confirmDelete(event) {
         event.preventDefault(); // prevent the default action of the button click
@@ -340,3 +233,42 @@
         checkbox.addEventListener('change', handleCheckboxChange);
     });
 </script>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#deleteButton').click(function () {
+                // Get the selected checkbox values
+                var selectedIds = [];
+                $("input:checkbox:checked").map(function () {
+                    selectedIds.push($(this).val());
+                });
+
+                // Make the AJAX request
+                if (selectedIds.length > 0) {
+                    var url = "https://localhost:7016/api/Department/deleteList";
+                    var token = document.getElementById("token").value;
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: JSON.stringify(selectedIds),
+                        contentType: "application/json",
+                        headers: {
+                            "Authorization": "Bearer" + " " + token
+                        },
+                        success: function (response) {
+                            // Handle success response
+                            location.reload(true);
+                            console.log(response);
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle error
+                            console.error(error);
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+}

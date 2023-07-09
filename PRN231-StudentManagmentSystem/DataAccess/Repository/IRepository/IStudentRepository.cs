@@ -8,6 +8,7 @@ namespace DataAccess.Repository.IRepository
         Task Add(Student student, CancellationToken cancellationToken = default);
         Task Update(Student student, CancellationToken cancellationToken = default);
         Task Delete(Guid id, CancellationToken cancellationToken = default);
+        Task DeleteList(List<string> id, CancellationToken cancellationToken = default);
         Task<bool> CheckAddExistEmail(string email, CancellationToken cancellationToken = default);
         Task<Student> GetById(Guid id);
         Task<PagedList<Student>> GetAll(string? keyword, bool? status, int page, int pagesize);

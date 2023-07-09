@@ -49,14 +49,13 @@ namespace StudentManagingSystem_Client.Services
             }
         }
 
-        public async Task<T?> Post<T>(string relativeUrl, object? data)
+        public async Task<HttpResponseMessage> Post<T>(string relativeUrl, object? data)
         {
             try
             {
                 var res = await _client.PostAsync(relativeUrl, GetBody(data));
                 if ((int)res.StatusCode == 401) await _httpContext.SignOutAsync("CookieAuthentication");
-                var content = await res.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(content);
+                return res;
             }
             catch
             {
@@ -109,11 +108,11 @@ namespace StudentManagingSystem_Client.Services
             }
         }*/
 
-        public async Task<string?> Get(string relativeUrl)
+        public async Task<string?> Get(string relativeUrl, string param)
         {
             try
             {
-                var res = await _client.GetAsync(relativeUrl);
+                var res = await _client.GetAsync(relativeUrl+param);
                 if ((int)res.StatusCode == 401) await _httpContext.SignOutAsync("CookieAuthentication");
                 return await res.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
             }

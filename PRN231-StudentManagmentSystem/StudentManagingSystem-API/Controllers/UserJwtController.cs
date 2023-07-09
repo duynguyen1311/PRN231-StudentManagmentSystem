@@ -41,7 +41,7 @@ namespace StudentManagingSystem_API.Controllers
             var user = await LoadUserByUsername(model.Email);
             if (await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                if (!user.Activated) throw new UserNotActivatedException($"User {user.UserName} was not activated.");
+                if (!user.Activated) return StatusCode(500, "Not activated");
                 var role = await _userManager.GetRolesAsync(user);
 
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -76,7 +76,7 @@ namespace StudentManagingSystem_API.Controllers
 
         }
 
-        
+
 
         private async Task<AppUser> LoadUserByUsername(string email)
         {

@@ -43,7 +43,17 @@ namespace DataAccess.Repository
         {
             var student = await _context.Students.FirstOrDefaultAsync(i => i.Id == id);
             if (student == null) throw new ArgumentException("Can not find !!!");
-            _context.Students.Remove(student);
+            student.Status = false;
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteList(List<string> id, CancellationToken cancellationToken = default)
+        {
+            var student = await _context.Students.Where(i => id.Contains(i.Id.ToString())).ToListAsync();
+            foreach (var item in student)
+            {
+                item.Status = false;
+            }
             await _context.SaveChangesAsync(cancellationToken);
         }
 
@@ -122,7 +132,7 @@ namespace DataAccess.Repository
                         CreatedDate = DateTime.Now,
                     };
                     var result = await _userManager.CreateAsync(user, "Abc@123");
-                    if(result.Succeeded) await _userManager.AddToRoleAsync(user, RoleConstant.STUDENT);
+                    if (result.Succeeded) await _userManager.AddToRoleAsync(user, RoleConstant.STUDENT);
                 }
 
             }

@@ -41,6 +41,7 @@ namespace DataAccess.Repository
 
             var dept = await _context.Departments.Where(i => id.Contains(i.Id.ToString())).ToListAsync();
             _context.Departments.RemoveRange(dept);
+            await _context.SaveChangesAsync(cancellationToken);
 
         }
 

@@ -91,6 +91,21 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost("deleteList")]
+        public async Task<IActionResult> DeleteList(List<string> Id)
+        {
+            try
+            {
+                await _repository.DeleteList(Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [AllowAnonymous]
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll()

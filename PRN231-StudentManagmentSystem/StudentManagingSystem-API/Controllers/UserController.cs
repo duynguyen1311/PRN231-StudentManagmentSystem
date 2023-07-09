@@ -100,5 +100,21 @@ namespace StudentManagingSystem_API.Controllers
                 return BadRequest("Old password is not correct !");
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet("detail")]
+        public async Task<IActionResult> Detail(string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null) return NotFound("Can not find !");
+                return Ok(user.Activated);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

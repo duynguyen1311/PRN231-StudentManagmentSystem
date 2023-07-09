@@ -31,6 +31,13 @@ namespace DataAccess.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task DeleteList(List<string> id, CancellationToken cancellationToken = default)
+        {
+            var subject = await _context.Subjects.Where(i => id.Contains(i.Id.ToString())).ToListAsync();
+            _context.Subjects.RemoveRange(subject);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<List<Subject>> GetAll()
         {
             var list = await _context.Subjects.Where(c => c.Status == true).OrderByDescending(c => c.CreatedDate).ToListAsync();
@@ -69,7 +76,7 @@ namespace DataAccess.Repository
             }
         }
 
-        public async Task<PagedList<Subject>> Search(string? keyword, bool? status,int? semester, int page, int pagesize)
+        public async Task<PagedList<Subject>> Search(string? keyword, bool? status, int? semester, int page, int pagesize)
         {
             var query = _context.Subjects.AsQueryable();
             if (!string.IsNullOrEmpty(keyword))
