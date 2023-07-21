@@ -175,6 +175,21 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("getStudentByClass")]
+        public async Task<IActionResult> GetStudentByClass([FromQuery] Guid? Id)
+        {
+            try
+            {
+                var res = await _repository.GetStudentByClass(Id);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [Authorize]
         [HttpGet("detail")]
         public async Task<IActionResult> GetDetail([FromQuery] Guid Id)

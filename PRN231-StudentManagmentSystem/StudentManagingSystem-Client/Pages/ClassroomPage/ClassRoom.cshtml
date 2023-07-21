@@ -116,6 +116,7 @@
                             <th>Created Date</th>
                             <th>Last Modified Date</th>
                             <th>Action</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,8 +143,6 @@
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                                                 <a class="dropdown-item" asp-page="UpdateClass" asp-route-id="@item.Id" asp-route-pageIndex="@Model.PageIndex"><i class="dw dw-edit2"></i> Edit</a>
                                                 <a class="dropdown-item" asp-page="DeleteClass" asp-route-id="@item.Id" onclick="return confirmDelete(event)"><i class="dw dw-delete-3"></i> Delete</a>
-                                                <a class="btn btn-info" data-toggle="modal" data-target="@("#detail-" + item.Id)" data-url="@Url.Action($"Details/{item.Id}")">Details</a>
-                                                @await Html.PartialAsync("_NotificationPartial", item)
                                             </div>
                                         }
                                         else
@@ -155,6 +154,12 @@
                                         }
                                     </div>
                                 </td>
+                                <td>
+                                    <a class="btn btn-info view-students" data-toggle="modal" data-target="#liststudent" data-classid="@item.Id">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+
                             </tr>
                         }
 
@@ -178,6 +183,40 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade bs-example-modal-lg" id="liststudent" tabindex="-1"
+     role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    List Student
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Student Name</th>
+                            <th scope="col">Student Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @{
     var t = HttpContext.Request.Cookies["AccessToken"];
 }
@@ -284,6 +323,42 @@
                     });
                 }
 
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.view-students').on('click', function () {
+                var classId = $(this).data('classid');
+
+                // Make the AJAX call to fetch the student list with classId as a query parameter
+                $.ajax({
+                    url: 'https://localhost:7016/api/Student/getStudentByClass?Id=' + classId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // Handle the success response and populate the table with data
+                        var tableBody = $('#liststudent').find('tbody');
+                        tableBody.empty(); // Clear the table before adding new data
+
+                        for (var i = 0; i < data.length; i++) {
+                            var row = `
+                    <tr>
+
+                        <td>${data[i].studentName}</td>
+
+                        <td>${data[i].studentCode}</td>
+
+                    </tr>
+                    `
+                            tableBody.append(row);
+                        }
+                    },
+                    error: function (error) {
+                        // Handle the error if needed
+                        console.log(error);
+                    }
+                });
             });
         });
     </script>

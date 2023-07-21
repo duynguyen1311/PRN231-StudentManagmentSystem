@@ -99,6 +99,11 @@ namespace DataAccess.Repository
             return student.Id;
         }
 
+        public async Task<List<Student>> GetStudentByClass(Guid? classId)
+        {
+            return await _context.Students.Where(i => i.Status == true && i.ClassRoomId == classId).OrderByDescending(i => i.CreatedDate).ToListAsync();
+        }
+
         public async Task Import(List<Student> listDept, CancellationToken cancellationToken = default)
         {
             foreach (var item in listDept)
