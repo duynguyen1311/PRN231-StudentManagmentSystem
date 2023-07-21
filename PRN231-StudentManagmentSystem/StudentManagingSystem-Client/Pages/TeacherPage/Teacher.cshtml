@@ -156,7 +156,7 @@
             </div>
             @{
                 var prev = Model.PageIndex > 1 ? "" : "disabled";
-                var next = Model.PageIndex <= Model.TotalPage ? "" : "disabled";
+                var next = Model.PageIndex < Model.TotalPage ? "" : "disabled";
             }
             <div class="row">
                 <div class="btn-group mb-15" style="margin-left:15px;">

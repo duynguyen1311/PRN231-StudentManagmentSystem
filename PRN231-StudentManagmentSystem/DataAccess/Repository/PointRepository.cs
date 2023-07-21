@@ -34,11 +34,43 @@ namespace DataAccess.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task DeleteList(List<string> listId, CancellationToken cancellationToken = default)
+        {
+            var listPoint = await _context.Points.Where(i => listId.Contains(i.Id.ToString())).ToListAsync();
+            _context.Points.RemoveRange(listPoint);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<Point> GetById(Guid id)
         {
             var point = await _context.Points.FirstOrDefaultAsync(i => i.Id == id);
             if (point == null) throw new ArgumentException("Can not find !!!");
             return point;
+        }
+
+        public async Task Import(List<Point> listPoint, CancellationToken cancellationToken = default)
+        {
+            foreach (var item in listPoint)
+            {
+                var dept = await _context.Points.FirstOrDefaultAsync(i => i.StudentId == item.StudentId && i.SubjectId == item.SubjectId);
+                if (dept == null)
+                {
+                    var newDept = new Point()
+                    {
+                        Id = Guid.NewGuid(),
+                        SubjectId = item.SubjectId,
+                        StudentId = item.StudentId,
+                        ProgessPoint = item.ProgessPoint,
+                        MidtermPoint = item.MidtermPoint,
+                        FinalPoint = (item.MidtermPoint * 50) / 100 + (item.ProgessPoint * 50) / 100,
+                        IsPassed = (item.MidtermPoint * 50) / 100 + (item.ProgessPoint * 50) / 100 >= 5 ? true : false,
+                        CreatedDate = DateTime.Now,
+                    };
+                    await _context.Points.AddAsync(newDept);
+                    await _context.SaveChangesAsync(cancellationToken);
+                }
+
+            }
         }
 
         public async Task<PagedList<Point>> PointStatistic(string? keyword, int? semester, Guid? subId, Guid? stuId, int page, int pagesize)
@@ -100,18 +132,18 @@ namespace DataAccess.Repository
             {
                 if (subId == Guid.Empty)
                 {
-                    query = query.Where(i => i.Subject.Id == null);
+                    query = query.Where(i => i.SubjectId == null);
                 }
-                query = query.Where(i => i.Subject.Id == subId);
+                query = query.Where(i => i.SubjectId == subId);
             }
 
             if (stuId != null)
             {
                 if (stuId == Guid.Empty)
                 {
-                    query = query.Where(i => i.Student.Id == null);
+                    query = query.Where(i => i.StudentId == null);
                 }
-                query = query.Where(i => i.Student.Id == stuId);
+                query = query.Where(i => i.StudentId == stuId);
             }
             if (semester != null)
             {

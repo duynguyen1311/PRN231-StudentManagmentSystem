@@ -27,10 +27,10 @@
                 <form method="post">
                     <div class="form-group">
                         <label>@Html.LabelFor(c=>c.PointAddRequest.SubjectId)</label>
-                        <select asp-for="PointAddRequest.SubjectId" class="custom-select2 form-control" style="width: 100%; height: 38px;">
+                        <select asp-for="PointAddRequest.SubjectId" class="selectpicker form-control" style="width: 100%; height: 38px;">
                             @foreach (var item in Model.ListSubject)
                             {
-                                <option value="@item.Id">@item.SubjectName</option>
+                                <option value="@item.Id">@item.SubjectName - @item.SubjectCode</option>
                             }
                         </select>
                     </div>
@@ -46,13 +46,13 @@
                     <div class="form-group row">
                         <label asp-for="PointAddRequest.ProgessPoint" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
                         <div class="col-sm-12 col-md-10">
-                            <input asp-for="PointAddRequest.ProgessPoint" class="form-control" type="number" placeholder="Progress">
+                            <input asp-for="PointAddRequest.ProgessPoint" class="form-control" type="number" step="0.01" placeholder="Progress">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label asp-for="PointAddRequest.MidtermPoint" class="col-sm-12 col-md-2 col-form-label">Midterm Point</label>
                         <div class="col-sm-12 col-md-10">
-                            <input asp-for="PointAddRequest.MidtermPoint" class="form-control" type="number" placeholder="Midterm">
+                            <input asp-for="PointAddRequest.MidtermPoint" class="form-control" type="number" step="0.01" placeholder="Midterm">
                         </div>
                     </div>
                     <div class="btn-list">

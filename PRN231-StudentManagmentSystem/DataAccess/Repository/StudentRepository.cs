@@ -92,6 +92,13 @@ namespace DataAccess.Repository
             return student;
         }
 
+        public async Task<Guid> GetIdByCode(string code)
+        {
+            var student = await _context.Students.FirstOrDefaultAsync(i => i.StudentCode == code);
+            if (student == null) throw new ArgumentException("Can not find !!!");
+            return student.Id;
+        }
+
         public async Task Import(List<Student> listDept, CancellationToken cancellationToken = default)
         {
             foreach (var item in listDept)

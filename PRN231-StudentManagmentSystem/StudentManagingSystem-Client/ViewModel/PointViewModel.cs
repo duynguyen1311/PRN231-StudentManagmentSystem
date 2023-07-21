@@ -57,4 +57,14 @@ namespace StudentManagingSystem_Client.ViewModel
         public string? LastModifiedBy { get; set; }
         public DateTime? LastModifiedDate { get; set; }
     }
+
+    public class PointImportRequest
+    {
+        public string? SubjectCode { get; set; }
+        public string? StudentCode { get; set; }
+        public float? ProgessPoint { get; set; }
+        public float? MidtermPoint { get; set; }
+
+    }
+
 }

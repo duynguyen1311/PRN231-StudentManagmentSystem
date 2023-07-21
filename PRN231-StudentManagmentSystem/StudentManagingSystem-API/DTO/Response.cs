@@ -35,6 +35,20 @@ namespace StudentManagingSystem_API.DTO
         public string? ClassName { get; set; }
     }
 
+    public class PointExport
+    {
+        public Guid Id { get; set; }
+        public string? StudentName { get; set; }
+        public string? StudentCode { get; set; }
+        public string? SubjectName { get; set; }
+        public string? SubjectCode { get; set; }
+        public int? Semester { get; set; }
+        public float? ProgessPoint { get; set; }
+        public float? MidtermPoint { get; set; }
+        public float? FinalPoint { get; set; }
+        public string? Result { get; set; }
+    }
+
     public class ClassRoomExport
     {
         public Guid Id { get; set; }

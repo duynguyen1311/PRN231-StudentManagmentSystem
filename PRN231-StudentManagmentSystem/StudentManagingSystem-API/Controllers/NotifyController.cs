@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessObject.Model;
+using BusinessObject.Utility;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,7 @@ namespace StudentManagingSystem_API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] NotifyAddRequest rq)
         {
@@ -39,7 +40,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] NotifyUpdateRequest rq)
         {
@@ -56,7 +57,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] Guid Id)
         {
@@ -86,7 +87,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("search")]
         public async Task<IActionResult> Search([FromBody] NotifySearchRequest rq)
         {

@@ -51,6 +51,13 @@ namespace DataAccess.Repository
             return subject;
         }
 
+        public async Task<Guid> GetIdByCode(string code)
+        {
+            var subject = await _context.Subjects.FirstOrDefaultAsync(i => i.SubjectCode == code);
+            if (subject == null) throw new ArgumentException("Can not find !!!");
+            return subject.Id;
+        }
+
         public async Task Import(List<Subject> listDept, CancellationToken cancellationToken = default)
         {
             foreach (var item in listDept)

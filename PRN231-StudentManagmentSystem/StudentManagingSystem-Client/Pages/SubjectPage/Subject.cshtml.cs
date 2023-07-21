@@ -39,17 +39,25 @@ namespace StudentManagingSystem_Client.Pages.SubjectPage
                 PageIndex = pageIndex;
                 pagesize = 5;
 
+                var st = await client.GetDetail<Student>("/api/Student/detail", $"?id={userid}");
+                if (st == null) throw new ArgumentException("Can not find!");
                 var requestModel = new SubjectSearchByStudentRequest
                 {
                     keyword = keyword,
                     status = status,
                     page = pageIndex,
                     pagesize = pagesize,
-                    semester = semester,
+                    semester = semester ?? st.InSemester,
                     studentId = Guid.Parse(userid)
                     
                 };
-                ListSubject = await client.PostSearch<PagedList<Subject>>("/api/Subject/searchByStudent", requestModel);
+                ListSubject = await client.PostSearch<PagedList<Subject>>("/api/Subject/search", requestModel);
+                if (ListSubject == null || ListSubject.Data.Count() == 0)
+                {
+                    ListSubject = new PagedList<Subject>();
+                    ViewData["mess"] = "There are not any subject yet for this semester !!!";
+                    return Page();
+                }
                 TotalPage = (int)(Math.Ceiling(ListSubject.TotalCount / (double)pagesize));
             }
             else

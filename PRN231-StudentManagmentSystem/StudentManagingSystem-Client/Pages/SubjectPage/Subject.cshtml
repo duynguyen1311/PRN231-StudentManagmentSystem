@@ -159,7 +159,13 @@
             </div>
             @{
                 var prev = Model.PageIndex > 1 ? "" : "disabled";
-                var next = Model.PageIndex <= Model.TotalPage ? "" : "disabled";
+                var next = Model.PageIndex < Model.TotalPage ? "" : "disabled";
+            }
+            @if(ViewData["mess"] != null)
+            {
+                <div class="row text-center">
+                    <p class="text-danger" style="font-style:italic">@ViewData["mess"]</p>
+                </div>
             }
             <div class="row">
                 <div class="btn-group mb-15" style="margin-left:15px;">

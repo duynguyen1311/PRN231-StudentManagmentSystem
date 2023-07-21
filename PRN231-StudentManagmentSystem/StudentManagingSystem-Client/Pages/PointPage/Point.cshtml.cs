@@ -23,9 +23,11 @@ namespace StudentManagingSystem_Client.Pages.PointPage
         public int? Semester { get; set; }
         public int PageIndex { get; set; } = 1;
         public int TotalPage { get; set; }
+        [BindProperty]
         public string? SubjectId { get; set; }
+        [BindProperty]
         public string? StudentId { get; set; }
-        public async Task<IActionResult> OnGetAsync(int? semester, string? keyword, Guid? stuId, Guid? subId, int pageIndex, int pagesize)
+        public async Task<IActionResult> OnGetAsync(int? semester, string? keyword, Guid? studentId, Guid? subjectId, int pageIndex, int pagesize)
         {
             try
             {
@@ -33,6 +35,8 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                 var userid = HttpContext.User.FindFirstValue(ClaimTypes.Sid);
                 var role = HttpContext.User.FindFirstValue(ClaimTypes.Role);
                 ListSubject = await client.GetAll<List<Subject>>("api/Subject/getall");
+                TempData["SelectedSubjectId"] = subjectId;
+                TempData["SelectedStudentId"] = studentId;
                 if (role.Contains(RoleConstant.STUDENT))
                 {
                     ListStudent = new List<Student>();
@@ -51,7 +55,7 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                         page = pageIndex,
                         pagesize = pagesize,
                         studentId = Guid.Parse(userid),
-                        subjectId = subId,
+                        subjectId = subjectId,
                     };
 
                     ListPoint = await client.PostSearch<PagedList<PointResponse>>("/api/Point/search", requestModel);
@@ -64,15 +68,17 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                     if (pageIndex == 0) pageIndex = 1;
                     PageIndex = pageIndex;
                     pagesize = 4;
-
+                    Semester = semester;
+                    SubjectId = subjectId.ToString();
+                    StudentId = studentId.ToString();
                     var requestModel = new PointSearchRequest
                     {
                         keyword = keyword,
                         semester = semester,
                         page = pageIndex,
                         pagesize = pagesize,
-                        studentId = stuId,
-                        subjectId = subId,
+                        studentId = studentId,
+                        subjectId = subjectId,
                     };
 
                     ListPoint = await client.PostSearch<PagedList<PointResponse>>("/api/Point/search", requestModel);

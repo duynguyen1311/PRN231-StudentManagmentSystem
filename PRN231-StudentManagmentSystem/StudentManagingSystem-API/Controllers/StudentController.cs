@@ -32,7 +32,7 @@ namespace StudentManagingSystem_API.Controllers
             _configuration = configuration;
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] StudentAddRequest rq)
         {
@@ -80,7 +80,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] StudentUpdateRequest rq)
         {
@@ -107,7 +107,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] Guid Id)
         {
@@ -125,19 +125,19 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("deleteList")]
         public async Task<IActionResult> DeleteList(List<string> Id)
         {
             try
             {
                 await _repository.DeleteList(Id);
-                foreach(var item in Id)
+                foreach (var item in Id)
                 {
                     var user = await _userManager.FindByIdAsync(item);
                     user.Activated = false;
                     await _userManager.UpdateAsync(user);
-                }   
+                }
                 return Ok();
             }
             catch (Exception ex)
@@ -191,7 +191,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("Import")]
         public async Task<IActionResult> ImportFile([FromBody] List<StudentAddRequest> rq)
         {
@@ -207,7 +207,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN + "," + RoleConstant.TEACHER)]
         [HttpPost("Export")]
         public async Task<IActionResult> ExportFile(StudentSearchRequest rq)
         {

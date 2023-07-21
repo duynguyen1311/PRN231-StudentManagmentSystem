@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using OfficeOpenXml.Style;
 using OfficeOpenXml;
 using StudentManagingSystem_API.DTO;
+using BusinessObject.Utility;
 
 namespace StudentManagingSystem_API.Controllers
 {
@@ -27,7 +28,7 @@ namespace StudentManagingSystem_API.Controllers
             _configuration = configuration;
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] DepartmentAddRequest rq)
         {
@@ -43,7 +44,7 @@ namespace StudentManagingSystem_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] DepartmentUpdateRequest rq)
         {
@@ -59,7 +60,7 @@ namespace StudentManagingSystem_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromQuery] Guid Id)
         {
@@ -74,7 +75,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("deleteList")]
         public async Task<IActionResult> DeleteList(List<string> Id)
         {
@@ -133,7 +134,7 @@ namespace StudentManagingSystem_API.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("Import")]
         public async Task<IActionResult> ImportFile([FromBody] List<Department> rq)
         {

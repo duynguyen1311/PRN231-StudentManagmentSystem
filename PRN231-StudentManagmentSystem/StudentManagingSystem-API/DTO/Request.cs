@@ -235,6 +235,15 @@ namespace StudentManagingSystem_API.DTO
         public int pagesize { get; set; }
     }
 
+    public class PointImportRequest
+    {
+        public string? SubjectCode { get; set; }
+        public string? StudentCode { get; set;}
+        public float? ProgessPoint { get; set; }
+        public float? MidtermPoint { get; set; }
+
+    }
+
     public class PointAddRequest
     {
         [JsonIgnore]
