@@ -21,7 +21,9 @@ namespace StudentManagingSystem_Client.Pages.PointPage
         public string? SubjectId { get; set; }
         [BindProperty]
         public string? StudentId { get; set; }
-        public async Task<IActionResult> OnGetAsync(int? semester, string? keyword, Guid? studentId, Guid? subjectId, int pageIndex, int pagesize)
+        [BindProperty]
+        public string? ClassId { get; set; }
+        public async Task<IActionResult> OnGetAsync(int? semester, string? keyword, Guid? studentId, Guid? subjectId, Guid? classId, int pageIndex, int pagesize)
         {
             var client = new ClientService(HttpContext);
             var userid = HttpContext.User.FindFirstValue(ClaimTypes.Sid);
@@ -67,6 +69,51 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                     // Handle the case when the API call fails
                     return Content("Failed to download the Excel file");
                 }
+            }
+            else if (role.Contains(RoleConstant.TEACHER))
+            {
+
+
+                Keyword = keyword;
+                if (pageIndex == 0) pageIndex = 1;
+                PageIndex = pageIndex;
+                pagesize = 1000;
+                Semester = semester;
+                SubjectId = subjectId.ToString();
+                ClassId = classId.ToString();
+                var requestModel = new PointSearchRequest
+                {
+                    keyword = keyword,
+                    semester = semester,
+                    page = pageIndex,
+                    pagesize = pagesize,
+                    classId = classId,
+                    subjectId = subjectId,
+                };
+
+                var response = await client.Export("/api/Point/Export", requestModel);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Read the file content from the API response
+                    byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+
+                    // Set the response headers for file download
+                    var contentDisposition = new System.Net.Mime.ContentDisposition
+                    {
+                        FileName = "Point.xlsx", // Replace with the desired file name
+                        Inline = false
+                    };
+                    Response.Headers.Add("Content-Disposition", contentDisposition.ToString());
+
+                    // Return the file as a FileStreamResult
+                    return new FileStreamResult(new MemoryStream(fileBytes), "application/octet-stream");
+                }
+                else
+                {
+                    // Handle the case when the API call fails
+                    return Content("Failed to download the Excel file");
+                }
+
             }
             else
             {

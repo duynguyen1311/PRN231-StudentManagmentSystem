@@ -115,7 +115,7 @@ namespace StudentManagingSystem_API.Controllers
         {
             try
             {
-                var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.page, rq.pagesize);
+                var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId,rq.classId, rq.page, rq.pagesize);
                 var map = _mapper.Map<PagedList<PointResponse>>(res);
                 return Ok(map);
             }
@@ -183,12 +183,12 @@ namespace StudentManagingSystem_API.Controllers
                 if (User.IsInRole(RoleConstant.STUDENT))
                 {
                     rq.studentId = Guid.Parse(GetUserIdFromConext());
-                    var rp2 = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.page, rq.pagesize);
+                    var rp2 = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.classId, rq.page, rq.pagesize);
                     request = rp2.Data.Select(i => i.Id).ToList();
                 }
                 else
                 {
-                    var rp2 = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.page, rq.pagesize);
+                    var rp2 = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.classId, rq.page, rq.pagesize);
                     request = rp2.Data.Select(i => i.Id).ToList();
                 }
 

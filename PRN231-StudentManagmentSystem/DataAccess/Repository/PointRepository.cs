@@ -118,7 +118,7 @@ namespace DataAccess.Repository
             };
         }
 
-        public async Task<PagedList<Point>> Search(string? keyword, int? semester, Guid? subId, Guid? stuId, int page, int pagesize)
+        public async Task<PagedList<Point>> Search(string? keyword, int? semester, Guid? subId, Guid? stuId,Guid? cid, int page, int pagesize)
         {
             var query = _context.Points.AsQueryable();
             if (!string.IsNullOrEmpty(keyword))
@@ -145,6 +145,16 @@ namespace DataAccess.Repository
                 }
                 query = query.Where(i => i.StudentId == stuId);
             }
+
+            if (cid != null)
+            {
+                if (cid == Guid.Empty)
+                {
+                    query = query.Where(i => i.Student.ClassRoomId == null);
+                }
+                query = query.Where(i => i.Student.ClassRoomId == cid);
+            }
+
             if (semester != null)
             {
                 query = query.Where(i => i.Subject.Semester == semester);

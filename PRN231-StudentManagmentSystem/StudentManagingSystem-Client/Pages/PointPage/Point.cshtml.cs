@@ -17,6 +17,7 @@ namespace StudentManagingSystem_Client.Pages.PointPage
         public PagedList<PointResponse> ListPoint { get; set; }
         public List<Student> ListStudent { get; set; }
         public List<Subject> ListSubject { get; set; }
+        public List<ClassRoomSearchResponse> ListClassRoom { get; set; }
         [BindProperty]
         public string? Keyword { get; set; }
         [BindProperty]
@@ -27,7 +28,9 @@ namespace StudentManagingSystem_Client.Pages.PointPage
         public string? SubjectId { get; set; }
         [BindProperty]
         public string? StudentId { get; set; }
-        public async Task<IActionResult> OnGetAsync(int? semester, string? keyword, Guid? studentId, Guid? subjectId, int pageIndex, int pagesize)
+        [BindProperty]
+        public string? ClassId { get; set; }
+        public async Task<IActionResult> OnGetAsync(int? semester, string? keyword, Guid? studentId, Guid? subjectId, Guid? classId, int pageIndex, int pagesize)
         {
             try
             {
@@ -44,7 +47,7 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                     Keyword = keyword;
                     if (pageIndex == 0) pageIndex = 1;
                     PageIndex = pageIndex;
-                    pagesize = 4;
+                    pagesize = 5;
 
                     var st = await client.GetDetail<Student>("/api/Student/detail", $"?id={userid}");
                     if (st == null) throw new ArgumentException("Can not find!");
@@ -61,13 +64,57 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                     ListPoint = await client.PostSearch<PagedList<PointResponse>>("/api/Point/search", requestModel);
                     TotalPage = (int)(Math.Ceiling(ListPoint.TotalCount / (double)pagesize));
                 }
+                else if (role.Contains(RoleConstant.TEACHER))
+                {
+                    ListStudent = new List<Student>();
+
+                    var requestModel = new ClassRoomSearchRequest
+                    {
+                        page = 1,
+                        pagesize = 5,
+                        teacherId = userid
+                    };
+
+                    var list = await client.PostSearch<PagedList<ClassRoomSearchResponse>>("/api/ClassRoom/search", requestModel);
+                    ListClassRoom = (List<ClassRoomSearchResponse>)list.Data;
+                    ViewData["message"] = "Please select a class to view mark !";
+                    if(classId == null) ListPoint = new PagedList<PointResponse>();
+                    else
+                    {
+                        Keyword = keyword;
+                        if (pageIndex == 0) pageIndex = 1;
+                        PageIndex = pageIndex;
+                        pagesize = 5;
+                        Semester = semester;
+                        SubjectId = subjectId.ToString();
+                        ClassId = classId.ToString();
+                        var requestModel2 = new PointSearchRequest
+                        {
+                            keyword = keyword,
+                            semester = semester,
+                            page = pageIndex,
+                            pagesize = pagesize,
+                            classId = classId,
+                            subjectId = subjectId,
+                        };
+
+                        ListPoint = await client.PostSearch<PagedList<PointResponse>>("/api/Point/search", requestModel2);
+                        ViewData["message"] = null;
+                        if (ListPoint.Data.Count() == 0 || ListPoint == null)
+                        {
+                            ViewData["mess"] = "There are not any mark for this class yet !!!";
+                            return Page();
+                        }
+                        TotalPage = (int)(Math.Ceiling(ListPoint.TotalCount / (double)pagesize));
+                    }
+                }
                 else
                 {
                     ListStudent = await client.GetAll<List<Student>>("/api/Student/getAllWithoutFilter");
                     Keyword = keyword;
                     if (pageIndex == 0) pageIndex = 1;
                     PageIndex = pageIndex;
-                    pagesize = 4;
+                    pagesize = 5;
                     Semester = semester;
                     SubjectId = subjectId.ToString();
                     StudentId = studentId.ToString();

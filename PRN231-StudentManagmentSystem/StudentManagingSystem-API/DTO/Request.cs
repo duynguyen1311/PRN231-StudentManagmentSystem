@@ -231,6 +231,7 @@ namespace StudentManagingSystem_API.DTO
         public int? semester { get; set; }
         public Guid? subjectId { get; set; }
         public Guid? studentId { get; set; }
+        public Guid? classId { get; set; }
         public int page { get; set; }
         public int pagesize { get; set; }
     }
