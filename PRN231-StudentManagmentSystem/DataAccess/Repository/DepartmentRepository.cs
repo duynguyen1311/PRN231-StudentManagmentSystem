@@ -117,6 +117,7 @@ namespace DataAccess.Repository
                 .Take(pagesize).ToListAsync();
             var res = await query1.ToListAsync();
             return new PagedList<Department>
+
             {
                 Data = query2,
                 TotalCount = res.Count
