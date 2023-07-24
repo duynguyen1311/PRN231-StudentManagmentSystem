@@ -20,13 +20,15 @@ namespace StudentManagingSystem_API.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentRepository _repository;
+        private readonly IRoomRepository _roomRepository;
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        public StudentController(IStudentRepository repository, IMapper mapper, UserManager<AppUser> userManager, IConfiguration configuration)
+        public StudentController(IStudentRepository repository,IRoomRepository roomRepository, IMapper mapper, UserManager<AppUser> userManager, IConfiguration configuration)
         {
             _repository = repository;
+            _roomRepository = roomRepository;
             _mapper = mapper;
             _userManager = userManager;
             _configuration = configuration;
@@ -44,6 +46,11 @@ namespace StudentManagingSystem_API.Controllers
                 if (!check)
                 {
                     return StatusCode(500, "Email is already existed !");
+                }
+                var checkCode = await _repository.CheckAddExistCode(rq.StudentCode);
+                if (!checkCode)
+                {
+                    return StatusCode(500, "Code is already existed !");
                 }
                 await _repository.Add(map);
                 var user = new AppUser()
@@ -212,6 +219,11 @@ namespace StudentManagingSystem_API.Controllers
         {
             try
             {
+                foreach(var itemm in rq)
+                {
+                    var cid = await _roomRepository.GetIdByCode(itemm.ClassCode);
+                    itemm.ClassRoomId = cid;
+                }
                 var map = _mapper.Map<List<Student>>(rq);
                 await _repository.Import(map);
                 return Ok();

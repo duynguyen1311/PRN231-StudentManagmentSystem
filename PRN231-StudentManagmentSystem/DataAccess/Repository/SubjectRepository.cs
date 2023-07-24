@@ -23,6 +23,19 @@ namespace DataAccess.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<bool> CheckAddExistCode(string code, CancellationToken cancellationToken = default)
+        {
+            List<Subject> listS = await _context.Subjects.ToListAsync();
+            foreach (var cus in listS)
+            {
+                if (code.Trim() == cus.SubjectCode.Trim())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public async Task Delete(Guid id, CancellationToken cancellationToken = default)
         {
             var subject = await _context.Subjects.FirstOrDefaultAsync(i => i.Id == id);

@@ -31,12 +31,29 @@
                             <input asp-for="SubjectAddRequest.SubjectName" class="form-control" type="text" placeholder="Subject name" required="required">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="SubjectAddRequest.SubjectCode" class="col-sm-12 col-md-2 col-form-label">Subject Code</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input asp-for="SubjectAddRequest.SubjectCode" class="form-control" type="text" placeholder="Subject code" required="required">
+                    @if (ViewData["messageCode"] != null)
+                    {
+                        <div class="form-group row">
+                            <label asp-for="SubjectAddRequest.SubjectCode" class="col-sm-12 col-md-2 col-form-label">Subject Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="SubjectAddRequest.SubjectCode" class="form-control form-control-danger" type="text" placeholder="Subject Code" required="required">
+                                <span asp-validation-for="SubjectAddRequest.SubjectCode" class="text-danger"></span>
+                                <div style="margin-top: 10px;font-style: italic" ; class="form-control-feedback text-danger">
+                                    @ViewData["messageCode"]
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group row">
+                            <label asp-for="SubjectAddRequest.SubjectCode" class="col-sm-12 col-md-2 col-form-label">Subject Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="SubjectAddRequest.SubjectCode" class="form-control" type="text" placeholder="Subject Code" required="required">
+                                <span asp-validation-for="SubjectAddRequest.SubjectCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
                     <div class="form-group row">
                         <label asp-for="SubjectAddRequest.Description" class="col-sm-12 col-md-2 col-form-label">Description</label>
                         <div class="col-sm-12 col-md-10">

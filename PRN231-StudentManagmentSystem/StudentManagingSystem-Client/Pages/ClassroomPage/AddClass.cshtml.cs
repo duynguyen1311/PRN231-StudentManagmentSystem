@@ -30,7 +30,18 @@ namespace StudentManagingSystem_Client.Pages.ClassroomPage
         public async Task<IActionResult> OnPostAsync()
         {
             var client = new ClientService(HttpContext);
-            var res = await client.PostAdd("/api/ClassRoom/add", ClassRoomAddRequest);
+            var res = await client.PostReturnResponse("/api/ClassRoom/add", ClassRoomAddRequest);
+            if (!res.IsSuccessStatusCode)
+            {
+                var content = res.Content.ReadAsStringAsync().Result;
+                if (content.Equals("Code is already existed !"))
+                {
+                    listDept = await client.GetAll<List<Department>>("/api/Department/getall");
+                    listUser = await client.GetAll<List<AppUser>>("/api/Teacher/getall");
+                    ViewData["messageCode"] = content;
+                    return Page();
+                }
+            }
             return RedirectToPage("/ClassRoomPage/ClassRoom");
         }
     }

@@ -26,6 +26,19 @@ namespace DataAccess.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<bool> CheckExistId(Guid studentId, Guid subjectId)
+        {
+            var point = await _context.Points.ToListAsync();
+            foreach(var item in point)
+            {
+                if (item.StudentId == studentId && item.SubjectId == subjectId)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public async Task Delete(Guid id, CancellationToken cancellationToken = default)
         {
             var point = await _context.Points.FirstOrDefaultAsync(i => i.Id == id);

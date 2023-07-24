@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OfficeOpenXml;
 using StudentManagingSystem_Client.Services;
+using StudentManagingSystem_Client.ViewModel;
 
 namespace StudentManagingSystem_Client.Pages.ClassroomPage
 {
@@ -20,7 +21,7 @@ namespace StudentManagingSystem_Client.Pages.ClassroomPage
             }
 
             // Step 3: Parse the Excel file and create a list of objects
-            var listClassRoom = new List<ClassRoom>();
+            var listClassRoom = new List<ClassRoomImportRequest>();
 
             using (var stream = new MemoryStream())
             {
@@ -33,10 +34,13 @@ namespace StudentManagingSystem_Client.Pages.ClassroomPage
 
                     for (int row = 2; row <= rowCount; row++) // Assuming the first row contains headers
                     {
-                        var obj = new ClassRoom
+                        var obj = new ClassRoomImportRequest
                         {
                             ClassCode = worksheet.Cells[row, 1].Value?.ToString(),
                             ClassName = worksheet.Cells[row, 2].Value?.ToString(),
+                            DepartmentCode = worksheet.Cells[row, 3].Value?.ToString(),
+                            Email = worksheet.Cells[row, 4].Value?.ToString(),
+
                         };
 
                         listClassRoom.Add(obj);

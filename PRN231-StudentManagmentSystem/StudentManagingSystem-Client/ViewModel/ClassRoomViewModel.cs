@@ -61,4 +61,12 @@ namespace StudentManagingSystem_Client.ViewModel
         public string? LastModifiedBy { get; set; }
         public DateTime? LastModifiedDate { get; set; }
     }
+
+    public class ClassRoomImportRequest
+    {
+        public string? ClassName { get; set; }
+        public string? ClassCode { get; set; }
+        public string? DepartmentCode { get; set; }
+        public string? Email { get; set; }
+    }
 }

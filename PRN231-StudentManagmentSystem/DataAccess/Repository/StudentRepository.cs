@@ -26,12 +26,25 @@ namespace DataAccess.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<bool> CheckAddExistCode(string code, CancellationToken cancellationToken = default)
+        {
+            List<Student> listS = await _context.Students.ToListAsync();
+            foreach (var cus in listS)
+            {
+                if (code.Trim() == cus.StudentCode.Trim())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public async Task<bool> CheckAddExistEmail(string email, CancellationToken cancellationToken = default)
         {
             List<Student> listS = await _context.Students.ToListAsync();
             foreach (var cus in listS)
             {
-                if (email == cus.Email)
+                if (email.Trim() == cus.Email.Trim())
                 {
                     return false;
                 }
@@ -122,6 +135,7 @@ namespace DataAccess.Repository
                         DOB = item.DOB,
                         Gender = item.Gender,
                         InSemester = item.InSemester,
+                        ClassRoomId = item.ClassRoomId,
                         Status = true,
                         CreatedDate = DateTime.Now,
                     };

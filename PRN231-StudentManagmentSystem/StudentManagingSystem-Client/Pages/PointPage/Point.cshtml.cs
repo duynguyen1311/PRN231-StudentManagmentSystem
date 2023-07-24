@@ -62,6 +62,12 @@ namespace StudentManagingSystem_Client.Pages.PointPage
                     };
 
                     ListPoint = await client.PostSearch<PagedList<PointResponse>>("/api/Point/search", requestModel);
+                    ViewData["message"] = null;
+                    if (ListPoint.Data.Count() == 0 || ListPoint == null)
+                    {
+                        ViewData["mess"] = "There are not any mark for this semester yet !!!";
+                        return Page();
+                    }
                     TotalPage = (int)(Math.Ceiling(ListPoint.TotalCount / (double)pagesize));
                 }
                 else if (role.Contains(RoleConstant.TEACHER))

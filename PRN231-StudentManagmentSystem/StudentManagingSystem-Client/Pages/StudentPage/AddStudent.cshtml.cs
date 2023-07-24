@@ -31,7 +31,25 @@ namespace StudentManagingSystem_Client.Pages.StudentPage
         {
 
             var client = new ClientService(HttpContext);
-            var res = await client.PostAdd("/api/Student/add", Request);
+            var res = await client.PostReturnResponse("/api/Student/add", Request);
+            if (!res.IsSuccessStatusCode)
+            {
+                var content = res.Content.ReadAsStringAsync().Result;
+                if (content.Equals("Email is already existed !"))
+                {
+                    listClass = await client.GetAll<List<ClassRoom>>("/api/ClassRoom/getall");
+                    ViewData["message"] = content;
+                    return Page();
+                }
+                if (content.Equals("Code is already existed !"))
+                {
+                    listClass = await client.GetAll<List<ClassRoom>>("/api/ClassRoom/getall");
+                    ViewData["messageCode"] = content;
+                    return Page();
+                }
+            }
+
+
             return RedirectToPage("/StudentPage/Student");
         }
     }

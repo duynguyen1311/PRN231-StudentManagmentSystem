@@ -23,7 +23,16 @@ namespace StudentManagingSystem_Client.Pages.DepartmentPage
             try
             {
                 var client = new ClientService(HttpContext);
-                await client.PostAdd("/api/Department/add",DepartmentAddRequest);
+                var res = await client.PostReturnResponse("/api/Department/add",DepartmentAddRequest);
+                if (!res.IsSuccessStatusCode)
+                {
+                    var content = res.Content.ReadAsStringAsync().Result;
+                    if (content.Equals("Code is already existed !"))
+                    {
+                        ViewData["messageCode"] = content;
+                        return Page();
+                    }
+                }
                 return RedirectToPage("/DepartmentPage/Department");
             }
             catch (Exception ex)

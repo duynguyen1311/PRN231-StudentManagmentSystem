@@ -19,12 +19,16 @@ namespace StudentManagingSystem_API.Controllers
     public class ClassRoomController : ControllerBase
     {
         private readonly IRoomRepository _repository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public ClassRoomController(IRoomRepository repository, IMapper mapper, IConfiguration configuration)
+        public ClassRoomController(IRoomRepository repository,IDepartmentRepository departmentRepository,IUserRepository userRepository, IMapper mapper, IConfiguration configuration)
         {
             _repository = repository;
+            _departmentRepository = departmentRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
             _configuration = configuration;
         }
@@ -48,6 +52,11 @@ namespace StudentManagingSystem_API.Controllers
             {
                 rq.CreatedDate = DateTime.Now;
                 rq.CreatedBy = GetNameFromConext();
+                var checkCode = await _repository.CheckAddExistCode(rq.ClassCode);
+                if (!checkCode)
+                {
+                    return StatusCode(500, "Code is already existed !");
+                }
                 var map = _mapper.Map<ClassRoom>(rq);
                 await _repository.Add(map);
                 return Ok();
@@ -195,11 +204,19 @@ namespace StudentManagingSystem_API.Controllers
 
         [Authorize(Roles = RoleConstant.ADMIN)]
         [HttpPost("Import")]
-        public async Task<IActionResult> ImportFile([FromBody] List<ClassRoom> rq)
+        public async Task<IActionResult> ImportFile([FromBody] List<ClassRoomImportRequest> rq)
         {
             try
             {
-                await _repository.Import(rq);
+                foreach(var item in rq)
+                {
+                    var did = await _departmentRepository.GetIdByCode(item.DepartmentCode);
+                    item.DepartmentId = did;
+                    var tid = await _userRepository.GetIdByEmail(item.Email);
+                    item.UserId = tid;
+                }
+                var map = _mapper.Map<List<ClassRoom>>(rq);
+                await _repository.Import(map);
                 return Ok();
             }
             catch (Exception ex)

@@ -146,6 +146,8 @@ namespace DataAccess.Repository
                         Id = Guid.NewGuid(),
                         ClassCode = item.ClassCode,
                         ClassName = item.ClassName,
+                        DepartmentId = item.DepartmentId,
+                        UserId = item.UserId,
                         Status = true,
                         CreatedDate = DateTime.Now,
                     };
@@ -156,6 +158,23 @@ namespace DataAccess.Repository
             }
         }
 
-        
+        public async Task<bool> CheckAddExistCode(string code, CancellationToken cancellationToken = default)
+        {
+            List<ClassRoom> listS = await _context.ClassRooms.ToListAsync();
+            foreach (var cus in listS)
+            {
+                if (code.Trim() == cus.ClassCode.Trim())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public async Task<Guid> GetIdByCode(string code)
+        {
+            var c = await _context.ClassRooms.FirstOrDefaultAsync(i => i.ClassCode == code);
+            return c.Id;
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace StudentManagingSystem_Client.ViewModel
     {
         public string StudentName { get; set; }
         public string StudentCode { get; set; }
+        public string? ClassCode { get; set; }
         public string? Address { get; set; }
         public string Email { get; set; }
         [Required]

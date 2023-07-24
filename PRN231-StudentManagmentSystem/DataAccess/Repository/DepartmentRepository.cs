@@ -23,6 +23,19 @@ namespace DataAccess.Repository
             await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<bool> CheckAddExistCode(string code, CancellationToken cancellationToken = default)
+        {
+            List<Department> listS = await _context.Departments.ToListAsync();
+            foreach (var cus in listS)
+            {
+                if (code.Trim() == cus.DepartmentCode.Trim())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public async Task Delete(Guid id, CancellationToken cancellationToken = default)
         {
             var department = await _context.Departments.FirstOrDefaultAsync(i => i.Id == id);
@@ -56,6 +69,13 @@ namespace DataAccess.Repository
             var department = await _context.Departments.FirstOrDefaultAsync(i => i.Id == id);
             if (department == null) throw new ArgumentException("Can not find !!!");
             return department;
+        }
+
+        public async Task<Guid> GetIdByCode(string? code)
+        {
+            var department = await _context.Departments.FirstOrDefaultAsync(i => i.DepartmentCode == code);
+            if(department != null) return department.Id;
+            return Guid.Empty;
         }
 
         public async Task Import(List<Department> listDept, CancellationToken cancellationToken = default)

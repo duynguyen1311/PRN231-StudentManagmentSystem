@@ -28,8 +28,8 @@
                     <div class="pd-20 card-box height-100-p">
                         <div class="profile-photo">
                             <a href="modal" data-toggle="modal" data-target="#modal" class="edit-avatar"><i class="fa fa-pencil"></i></a>
-                            <img src="vendors/images/photo1.jpg" alt="" class="avatar-photo">
-                            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                            <img src="vendors/images/user-avatar.jpg" alt="" class="avatar-photo">
+                            @*<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-body pd-5">
@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
                         <h5 class="text-center h5 mb-0">@Model.Profile.FullName</h5>
                         @if (Model.Profile.StudentCode != null)
@@ -178,7 +178,7 @@
                                                         }
                                                         <div class="form-group">
                                                             <label asp-for="Profile.DOB">Date of birth</label>
-                                                            <input asp-for="Profile.DOB" class="form-control form-control-lg date-picker" type="text">
+                                                            <input asp-for="Profile.DOB" class="form-control form-control-lg date-picker" type="date">
                                                         </div>
                                                         <div class="form-group">
                                                             <label asp-for="Profile.Gender">Gender</label>

@@ -25,24 +25,61 @@
             <!-- Default Basic Forms Start -->
             <div class="pd-20 card-box mb-30">
                 <form method="post">
-                    <div class="form-group">
-                        <label>@Html.LabelFor(c=>c.PointAddRequest.SubjectId)</label>
-                        <select asp-for="PointAddRequest.SubjectId" class="selectpicker form-control" style="width: 100%; height: 38px;">
-                            @foreach (var item in Model.ListSubject)
-                            {
-                                <option value="@item.Id">@item.SubjectName - @item.SubjectCode</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>@Html.LabelFor(c=>c.PointAddRequest.StudentId)</label>
-                        <select asp-for="PointAddRequest.StudentId" class="custom-select2 form-control" style="width: 100%; height: 38px;">
-                            @foreach (var item in Model.ListStudent)
-                            {
-                                <option value="@item.Id">@item.StudentName</option>
-                            }
-                        </select>
-                    </div>
+                    @if (ViewData["messageCode"] != null)
+                    {
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select asp-for="PointAddRequest.SubjectId" class="selectpicker form-control form-control-danger" style="width: 100%; height: 38px;">
+                                @foreach (var item in Model.ListSubject)
+                                {
+                                    <option value="@item.Id">@item.SubjectName - @item.SubjectCode</option>
+                                }
+                            </select>
+                            <span asp-validation-for="PointAddRequest.SubjectId" class="text-danger"></span>
+                            <div style="margin-top: 10px;font-style: italic" ; class="form-control-feedback text-danger">
+                                @ViewData["messageCode"]
+                            </div>
+                        </div>
+
+                    }else{
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select asp-for="PointAddRequest.SubjectId" class="selectpicker form-control" style="width: 100%; height: 38px;">
+                                @foreach (var item in Model.ListSubject)
+                                {
+                                    <option value="@item.Id">@item.SubjectName - @item.SubjectCode</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
+                    @if (ViewData["messageCode"] != null)
+                    {
+                        <div class="form-group">
+                            <label>Student</label>
+                            <select asp-for="PointAddRequest.StudentId" class="custom-select2 form-control form-control-danger" style="width: 100%; height: 38px;">
+                                @foreach (var item in Model.ListStudent)
+                                {
+                                    <option value="@item.Id">@item.StudentName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="PointAddRequest.StudentId" class="text-danger"></span>
+                            <div style="margin-top: 10px;font-style: italic" ; class="form-control-feedback text-danger">
+                                @ViewData["messageCode"]
+                            </div>
+                        </div>
+
+                    }else{
+                        <div class="form-group">
+                            <label>Student</label>
+                            <select asp-for="PointAddRequest.StudentId" class="custom-select2 form-control" style="width: 100%; height: 38px;">
+                                @foreach (var item in Model.ListStudent)
+                                {
+                                    <option value="@item.Id">@item.StudentName</option>
+                                }
+                            </select>
+                        </div>
+                    }
                     <div class="form-group row">
                         <label asp-for="PointAddRequest.ProgessPoint" class="col-sm-12 col-md-2 col-form-label">Progress Point</label>
                         <div class="col-sm-12 col-md-10">

@@ -35,6 +35,11 @@ namespace StudentManagingSystem_API.Controllers
             try
             {
                 rq.CreatedDate = DateTime.Now;
+                var checkCode = await _repository.CheckAddExistCode(rq.DepartmentCode);
+                if (!checkCode)
+                {
+                    return StatusCode(500, "Code is already existed !");
+                }
                 var map = _mapper.Map<Department>(rq);
                 await _repository.Add(map);
                 return Ok();

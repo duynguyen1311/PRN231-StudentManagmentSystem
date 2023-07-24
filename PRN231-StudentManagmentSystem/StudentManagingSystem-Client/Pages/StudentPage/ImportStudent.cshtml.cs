@@ -46,6 +46,7 @@ namespace StudentManagingSystem_Client.Pages.StudentPage
                             DOB = DateTime.ParseExact(worksheet.Cells[row, 6].Value?.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
                             Phone = worksheet.Cells[row, 7].Value?.ToString(),
                             InSemester = int.Parse(worksheet.Cells[row, 8].Value?.ToString()),
+                            ClassCode = worksheet.Cells[row, 9].Value?.ToString(),
                             Password = "Abc@123",
                             Status = true,
                         };

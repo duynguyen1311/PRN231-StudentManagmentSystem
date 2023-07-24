@@ -32,14 +32,30 @@
                             <input asp-for="ClassRoomAddRequest.ClassName" class="form-control" type="text" placeholder="ClassRoom name">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="ClassRoomAddRequest.ClassCode" class="col-sm-12 col-md-2 col-form-label">ClassRoom Code</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input asp-for="ClassRoomAddRequest.ClassCode" class="form-control" type="text" placeholder="ClassRoom code">
+                    @if (ViewData["messageCode"] != null)
+                    {
+                        <div class="form-group row">
+                            <label asp-for="ClassRoomAddRequest.ClassCode" class="col-sm-12 col-md-2 col-form-label">ClassRoom Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="ClassRoomAddRequest.ClassCode" class="form-control form-control-danger" type="text" placeholder="ClassRoom Code" required="required">
+                                <span asp-validation-for="ClassRoomAddRequest.ClassCode" class="text-danger"></span>
+                                <div style="margin-top: 10px;font-style: italic" ; class="form-control-feedback text-danger">
+                                    @ViewData["messageCode"]
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group row">
+                            <label asp-for="ClassRoomAddRequest.ClassCode" class="col-sm-12 col-md-2 col-form-label">ClassRoom Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="ClassRoomAddRequest.ClassCode" class="form-control" type="text" placeholder="ClassRoom code">
+                            </div>
+                        </div>
+                    }
                     <div class="form-group">
-                        <label>@Html.LabelFor(c=>c.ClassRoomAddRequest.DepartmentId)</label>
+                        <label>Department</label>
                         <select asp-for="ClassRoomAddRequest.DepartmentId" class="custom-select2 form-control" style="width: 100%; height: 38px;">
                             @foreach (var item in Model.listDept)
                             {
@@ -48,7 +64,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>@Html.LabelFor(c=>c.ClassRoomAddRequest.UserId)</label>
+                        <label>Teacher</label>
                         <select asp-for="ClassRoomAddRequest.UserId" class="custom-select2 form-control" style="width: 100%; height: 38px;">
                             @foreach (var item in Model.listUser)
                             {

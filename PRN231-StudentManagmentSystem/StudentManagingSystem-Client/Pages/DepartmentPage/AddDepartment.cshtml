@@ -32,12 +32,29 @@
                             <input asp-for="DepartmentAddRequest.DepartmentName" class="form-control" type="text" placeholder="Department name">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label asp-for="DepartmentAddRequest.DepartmentCode" class="col-sm-12 col-md-2 col-form-label">Department Code</label>
-                        <div class="col-sm-12 col-md-10">
-                            <input asp-for="DepartmentAddRequest.DepartmentCode" class="form-control" type="text" placeholder="Department code">
+                    @if (ViewData["messageCode"] != null)
+                    {
+                        <div class="form-group row">
+                            <label asp-for="DepartmentAddRequest.DepartmentCode" class="col-sm-12 col-md-2 col-form-label">Department Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="DepartmentAddRequest.DepartmentCode" class="form-control form-control-danger" type="text" placeholder="Department Code" required="required">
+                                <span asp-validation-for="DepartmentAddRequest.DepartmentCode" class="text-danger"></span>
+                                <div style="margin-top: 10px;font-style: italic" ; class="form-control-feedback text-danger">
+                                    @ViewData["messageCode"]
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group row">
+                            <label asp-for="DepartmentAddRequest.DepartmentCode" class="col-sm-12 col-md-2 col-form-label">Department Code</label>
+                            <div class="col-sm-12 col-md-10">
+                                <input asp-for="DepartmentAddRequest.DepartmentCode" class="form-control" type="text" placeholder="Department Code" required="required">
+                                <span asp-validation-for="DepartmentAddRequest.DepartmentCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
                     <div class="form-group row">
                         <label asp-for="DepartmentAddRequest.Status" class="col-sm-12 col-md-2 col-form-label">Status</label>
                         <div class="col-sm-12 col-md-10">

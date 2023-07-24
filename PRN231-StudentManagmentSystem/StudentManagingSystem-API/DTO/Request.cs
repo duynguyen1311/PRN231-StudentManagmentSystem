@@ -98,6 +98,16 @@ namespace StudentManagingSystem_API.DTO
         public int page { get; set; }
         public int pagesize { get; set; }
     }
+    public class ClassRoomImportRequest
+    {
+        public string ClassName { get; set; }
+        public string ClassCode { get; set; }
+        public bool? Status { get; set; }
+        public string? DepartmentCode { get; set; }
+        public string? Email { get; set; }
+        public Guid? DepartmentId { get; set; }
+        public string? UserId { get; set; }
+    }
 
     public class ClassRoomAddRequest
     {
@@ -139,6 +149,7 @@ namespace StudentManagingSystem_API.DTO
     {
         public string StudentName { get; set; }
         public string StudentCode { get; set; }
+        public string? ClassCode { get; set; }
         public string? Address { get; set; }
         public string Email { get; set; }
         [Required]
@@ -305,6 +316,7 @@ namespace StudentManagingSystem_API.DTO
         public string? Phone { get; set; }
         public string? Gender { get; set; }
         public DateTime? DOB { get; set; }
+        public bool? Activated { get; set; }
         [JsonIgnore]
         public string? LastModifiedBy { get; set; }
         [JsonIgnore]

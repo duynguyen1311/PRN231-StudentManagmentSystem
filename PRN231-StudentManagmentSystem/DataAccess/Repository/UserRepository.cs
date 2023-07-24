@@ -128,6 +128,11 @@ namespace DataAccess.Repository
             }
         }
 
-        
+        public async Task<string> GetIdByEmail(string? email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null) return user.Id;
+            return null;
+        }
     }
 }

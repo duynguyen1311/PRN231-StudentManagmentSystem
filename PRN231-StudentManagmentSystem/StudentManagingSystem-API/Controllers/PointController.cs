@@ -24,7 +24,7 @@ namespace StudentManagingSystem_API.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public PointController(IPointRepository repository,IStudentRepository studentRepository, ISubjectRepository subjectRepository, IMapper mapper, IConfiguration configuration)
+        public PointController(IPointRepository repository, IStudentRepository studentRepository, ISubjectRepository subjectRepository, IMapper mapper, IConfiguration configuration)
         {
             _repository = repository;
             _studentRepository = studentRepository;
@@ -53,6 +53,11 @@ namespace StudentManagingSystem_API.Controllers
                 rq.Id = Guid.NewGuid();
                 rq.CreatedBy = GetNameFromConext();
                 rq.CreatedDate = DateTime.Now;
+                var checkCode = await _repository.CheckExistId(rq.StudentId, rq.SubjectId);
+                if (!checkCode)
+                {
+                    return StatusCode(500, "Student already has point for this subject");
+                }
                 var map = _mapper.Map<Point>(rq);
                 await _repository.Add(map);
                 return Ok();
@@ -115,7 +120,7 @@ namespace StudentManagingSystem_API.Controllers
         {
             try
             {
-                var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId,rq.classId, rq.page, rq.pagesize);
+                var res = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.classId, rq.page, rq.pagesize);
                 var map = _mapper.Map<PagedList<PointResponse>>(res);
                 return Ok(map);
             }
@@ -147,9 +152,9 @@ namespace StudentManagingSystem_API.Controllers
             try
             {
                 List<Point> lp = new List<Point>();
-                foreach(var item in rq)
+                foreach (var item in rq)
                 {
-                    if(item.StudentCode != null && item.SubjectCode != null)
+                    if (item.StudentCode != null && item.SubjectCode != null)
                     {
                         var st = await _studentRepository.GetIdByCode(item.StudentCode);
                         var sub = await _subjectRepository.GetIdByCode(item.SubjectCode);
@@ -184,6 +189,11 @@ namespace StudentManagingSystem_API.Controllers
                 {
                     rq.studentId = Guid.Parse(GetUserIdFromConext());
                     var rp2 = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, rq.studentId, rq.classId, rq.page, rq.pagesize);
+                    request = rp2.Data.Select(i => i.Id).ToList();
+                }
+                else if (User.IsInRole(RoleConstant.TEACHER))
+                {
+                    var rp2 = await _repository.Search(rq.keyword, rq.semester, rq.subjectId, null, rq.classId, rq.page, rq.pagesize);
                     request = rp2.Data.Select(i => i.Id).ToList();
                 }
                 else
@@ -250,7 +260,7 @@ namespace StudentManagingSystem_API.Controllers
                         workSheet.Cells[row, 9].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                         workSheet.Cells[row, 10].Value = listCusTypeExport[i].Result;
                         workSheet.Cells[row, 10].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                        
+
                         row++;
                     }
                     workSheet.Cells.AutoFitColumns();
@@ -266,6 +276,7 @@ namespace StudentManagingSystem_API.Controllers
                             pkg.SaveAs(stream);
                             var content = stream.ToArray();
                             //string timestamp = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss").ToUpper().Remove('-').Remove(' ').Remove(':').Trim();
+                            stream.Close();
                             return File(
                                 content,
                                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -277,6 +288,7 @@ namespace StudentManagingSystem_API.Controllers
                     {
                         return StatusCode(500, ex.Message);
                     }
+                    file.Close();
                 }
             }
             catch (Exception ex)

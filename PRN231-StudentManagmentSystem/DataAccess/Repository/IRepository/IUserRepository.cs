@@ -7,6 +7,7 @@ namespace DataAccess.Repository.IRepository
     {
         Task<List<AppUser>> GetAll();
         Task<AppUser> GetById(string id);
+        Task<string> GetIdByEmail(string? email);
         Task Delete(string id, CancellationToken cancellationToken = default);
         Task DeleteList(List<string> id, CancellationToken cancellationToken = default);
         Task<PagedList<AppUser>> Search(string? keyword, bool? status, int page, int pagesize);
