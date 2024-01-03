@@ -65,7 +65,7 @@ namespace BusinessObject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ClassRooms");
+                    b.ToTable("ClassRooms", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObject.Model.Department", b =>
@@ -101,7 +101,7 @@ namespace BusinessObject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObject.Model.Notification", b =>
@@ -144,7 +144,7 @@ namespace BusinessObject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObject.Model.Point", b =>
@@ -187,7 +187,7 @@ namespace BusinessObject.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Points");
+                    b.ToTable("Points", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObject.Model.Student", b =>
@@ -250,7 +250,7 @@ namespace BusinessObject.Migrations
 
                     b.HasIndex("ClassRoomId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObject.Model.Subject", b =>
@@ -296,7 +296,7 @@ namespace BusinessObject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
