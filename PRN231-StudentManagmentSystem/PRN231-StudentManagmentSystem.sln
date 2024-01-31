@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagingSystem-API",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagingSystem-Client", "StudentManagingSystem-Client\StudentManagingSystem-Client.csproj", "{50AE84EF-6CDC-48CF-9AB3-B8342F7BF5B1}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E7C97455-74A3-4809-AC4C-2C090565067C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{50AE84EF-6CDC-48CF-9AB3-B8342F7BF5B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50AE84EF-6CDC-48CF-9AB3-B8342F7BF5B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50AE84EF-6CDC-48CF-9AB3-B8342F7BF5B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7C97455-74A3-4809-AC4C-2C090565067C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7C97455-74A3-4809-AC4C-2C090565067C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7C97455-74A3-4809-AC4C-2C090565067C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7C97455-74A3-4809-AC4C-2C090565067C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

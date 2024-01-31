@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  studentmanagingsystem-api:
+    image: studentmanagingsystemapi
+    build:
+      context: .
+      dockerfile: StudentManagingSystem-API/Dockerfile
+
+  studentmanagingsystem-client:
+    image: studentmanagingsystemclient
+    build:
+       context: .
+       dockerfile: StudentManagingSystem-Client/Dockerfile

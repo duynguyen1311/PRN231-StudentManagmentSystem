@@ -14,7 +14,7 @@ namespace StudentManagingSystem_Client.Services
         {
             _httpContext = httpContext;
             _client = client ?? new HttpClient();
-            _client.BaseAddress = new Uri("https://localhost:7016");
+            _client.BaseAddress = new Uri("http://localhost:5000");
             _client.DefaultRequestHeaders.Clear();
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _httpContext.Request.Cookies["AccessToken"]);
         }
